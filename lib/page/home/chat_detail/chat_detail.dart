@@ -54,7 +54,11 @@ class _ChatDetailState extends State<ChatDetail> {
                   currentUserId: FirebaseAuth.instance.currentUser?.displayName,
                   friendUid: friendName
                 }
-              }).then((value) => {chatDocId = value});
+              }).then((value) => {chatDocId = value.id, print(value.id)})
+              .whenComplete(() => print(chatDocId));
+              setState(() {
+                
+              });
             }
           },
         )
