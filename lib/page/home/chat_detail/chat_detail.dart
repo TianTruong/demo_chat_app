@@ -48,22 +48,22 @@ class _ChatDetailState extends State<ChatDetail> {
 
               print(chatDocId);
             } else {
-              await chats.add({
-                'users': {currentUserId: null, friendUid: null},
-                'names': {
-                  currentUserId: FirebaseAuth.instance.currentUser?.displayName,
-                  friendUid: friendName
-                }
-              }).then((value) => {chatDocId = value.id, print(value.id)})
-              .whenComplete(() => print(chatDocId));
-              setState(() {
-                
-              });
+              await chats
+                  .add({
+                    'users': {currentUserId: null, friendUid: null},
+                    'names': {
+                      currentUserId:
+                          FirebaseAuth.instance.currentUser?.displayName,
+                      friendUid: friendName
+                    }
+                  })
+                  .then((value) => {chatDocId = value.id})
+                  .whenComplete(() => print(chatDocId));
+              setState(() {});
             }
           },
         )
         .catchError((error) {});
-        
   }
 
   @override
