@@ -42,7 +42,6 @@ abstract class _ChatState with Store {
             .listen((QuerySnapshot snapshot) {
           if (snapshot.docs.isNotEmpty) {
             messages[doc['name']] = {
-              // 'avatar': snapshot.docs.first['avatar'],
               'message': snapshot.docs.first['message'],
               'time': snapshot.docs.first['createdOn'],
               'friendName': doc['name'],

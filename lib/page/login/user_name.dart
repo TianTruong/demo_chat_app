@@ -13,7 +13,6 @@ class UserName extends StatelessWidget {
   UserName({Key? key}) : super(key: key);
 
   var _nameController = TextEditingController();
-  bool check = false;
   late String avatar = '';
 
   CollectionReference users = FirebaseFirestore.instance.collection('users');
@@ -50,7 +49,6 @@ class UserName extends StatelessWidget {
     await ref.putFile(img);
 
     var downloadURL = await ref.getDownloadURL();
-    check = true;
     avatar = downloadURL;
 
     print(downloadURL);

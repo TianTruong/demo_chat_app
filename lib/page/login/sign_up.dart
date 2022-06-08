@@ -162,10 +162,6 @@ class _SignUpState extends State<SignUp> {
   }
 
   Future SignUp() async {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: false,
-    //     builder: (context) => const Center(child: CircularProgressIndicator()));
 
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(

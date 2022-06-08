@@ -14,7 +14,6 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(15.0),
         child: ListView(
           children: [
-            // Text(user.photoURL.toString()),
             user.photoURL != null
                 ? Center(
                     child: ClipOval(

@@ -144,10 +144,6 @@ class _LoginGmailState extends State<LoginGmail> {
   }
 
   Future SignIn() async {
-    // showDialog(
-    //     context: context,
-    //     barrierDismissible: false,
-    //     builder: (context) => const Center(child: CircularProgressIndicator()));
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _gmailController.text.trim(),

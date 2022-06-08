@@ -47,23 +47,6 @@ class _ChatsState extends State<Chats> {
                         chatState.messages.values.toList().map((data) {
                   return Card(
                     child: ListTile(
-                        // leading: data['avatar'] != ''
-                        //               ? ClipOval(
-                        //                   child: Image.network(
-                        //                     data['avatar'],
-                        //                     fit: BoxFit.cover,
-                        //                     cacheHeight: 160,
-                        //                     cacheWidth: 160,
-                        //                   ),
-                        //                 )
-                        //               : ClipOval(
-                        //                   child: Image.asset(
-                        //                     'images/bg.jpg',
-                        //                     fit: BoxFit.fill,
-                        //                     cacheHeight: 160,
-                        //                     cacheWidth: 160,
-                        //                   ),
-                        //                 ),
                         title: Text(data['friendName']),
                         subtitle: Text(data['message']),
                         trailing: const Icon(Icons.arrow_forward_ios_outlined),

@@ -59,6 +59,7 @@ class _ChatDetailState extends State<ChatDetail> {
           },
         )
         .catchError((error) {});
+        
   }
 
   @override

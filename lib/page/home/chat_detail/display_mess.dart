@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, camel_case_types, prefer_const_constructors
+// ignore_for_file: prefer_typing_uninitialized_variables, camel_case_types, prefer_const_constructors, sized_box_for_whitespace, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -18,8 +18,8 @@ class displayMessWidget extends StatefulWidget {
 
 class _displayMessWidgetState extends State<displayMessWidget> {
   AudioPlayer advancedPlayer = AudioPlayer();
-  String path =
-      'https://firebasestorage.googleapis.com/v0/b/chatapp-ef0a7.appspot.com/o/sample-6s.mp3?alt=media&token=6afbc658-2733-45f4-be07-53a212211ce1';
+  // String path =
+  //     'https://firebasestorage.googleapis.com/v0/b/chatapp-ef0a7.appspot.com/o/sample-6s.mp3?alt=media&token=6afbc658-2733-45f4-be07-53a212211ce1';
 
   bool isSender(String friend) {
     return friend != widget.friendUid;
@@ -32,15 +32,15 @@ class _displayMessWidgetState extends State<displayMessWidget> {
     return Alignment.topLeft;
   }
 
-  buildButton(data){
+  buildButton(data) {
     return advancedPlayer.state == PlayerState.STOPPED ||
             advancedPlayer.state == PlayerState.COMPLETED
         ? IconButton(
             color: Colors.black,
             icon: Icon(Icons.play_arrow),
             onPressed: () async {
-              // await advancedPlayer.play(data);
-              await advancedPlayer.play(path);
+              await advancedPlayer.play(data);
+              // await advancedPlayer.play(path);
               setState(() {});
             },
           )
@@ -54,14 +54,14 @@ class _displayMessWidgetState extends State<displayMessWidget> {
                 },
               )
             : IconButton(
-            color: Colors.black,
-            icon: Icon(Icons.pause),
-            onPressed: () async {
-              await advancedPlayer.pause().whenComplete(
-                  () => advancedPlayer.state = PlayerState.PAUSED);
-              setState(() {});
-            },
-          );
+                color: Colors.black,
+                icon: Icon(Icons.pause),
+                onPressed: () async {
+                  await advancedPlayer.pause().whenComplete(
+                      () => advancedPlayer.state = PlayerState.PAUSED);
+                  setState(() {});
+                },
+              );
   }
 
   @override
@@ -100,9 +100,10 @@ class _displayMessWidgetState extends State<displayMessWidget> {
                           widget.data['image'],
                           fit: BoxFit.cover,
                         )
-                      : Container(width: 100,
-                      // height: 60,
-                        child: Row(
+                      : Container(
+                          width: 100,
+                          // height: 60,
+                          child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -110,15 +111,13 @@ class _displayMessWidgetState extends State<displayMessWidget> {
                               IconButton(
                                 icon: Icon(Icons.replay),
                                 onPressed: () async {
-                                  // await advancedPlayer.release();
-                                  // await advancedPlayer.play(widget.data['voice']);
                                   print(advancedPlayer.state);
                                   setState(() {});
                                 },
                               ),
                             ],
                           ),
-                      ),
+                        ),
             ),
           ],
         ),

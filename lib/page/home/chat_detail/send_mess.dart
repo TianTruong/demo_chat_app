@@ -145,10 +145,10 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                               )
                             ])))
                   }),
+          // Nút gửi voice
           _isRecording
               ? Row(
                   children: [
-                    
                     IconButton(
                         color: Colors.redAccent,
                         icon: const Icon(
@@ -159,7 +159,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                               _audioRecorder.stop(),
                               setState(() => _isRecording = false)
                             }),
-                            IconButton(
+                    IconButton(
                         color: Colors.redAccent,
                         icon: const Icon(
                           Icons.send_sharp,
@@ -178,7 +178,6 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
           // Nhập nội dung tin nhắn
           Expanded(
             child: TextField(
-              
               cursorColor: const Color(0xFF08C187),
               keyboardType: TextInputType.text,
               controller: _textController,
