@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:record/record.dart';
 
 class SendMessageWidget extends StatefulWidget {
   final chatDocId;
@@ -24,21 +25,62 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
   var _textController = TextEditingController();
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+  bool _isRecording = false;
+  final _audioRecorder = Record();
 
-  void sendMessage(String message) {
-    if (message == '') return;
+  send(message, ImageURL, VoiceURL) {
     chats.doc(widget.chatDocId).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
-      'friendUid': 
-      // currentUserId,
-      widget.friendUid,
+      'friendUid': widget.friendUid,
       'friendName': widget.friendName,
       'message': message,
-      'image': '',
-      'uid':currentUserId
+      'image': ImageURL,
+      'voice': VoiceURL,
+      'uid': currentUserId
     }).then((value) {
       _textController.text = '';
     });
+  }
+
+  Future<void> _start() async {
+    try {
+      if (await _audioRecorder.hasPermission()) {
+        await _audioRecorder.start();
+
+        bool isRecording = await _audioRecorder.isRecording();
+        setState(() {
+          _isRecording = isRecording;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _stop() async {
+    final AudioID = DateTime.now().microsecondsSinceEpoch.toString();
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child(widget.chatDocId)
+        .child('/audio')
+        .child('Audio_$AudioID');
+
+    final path = await _audioRecorder.stop();
+
+    var audio = File(path!);
+
+    await ref.putFile(audio);
+
+    var AudioURL = await ref.getDownloadURL();
+
+    send('', '', AudioURL);
+
+    setState(() => _isRecording = false);
+  }
+
+  void sendMessage(String message) {
+    if (message == '') return;
+    send(message, '', '');
   }
 
   void sendImage(ImageSource source) async {
@@ -57,20 +99,11 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
 
     await ref.putFile(img);
 
-    var downloadURL = await ref.getDownloadURL();
+    var ImageURL = await ref.getDownloadURL();
 
-    print(downloadURL);
+    print(ImageURL);
 
-    chats.doc(widget.chatDocId).collection('messages').add({
-      'createdOn': FieldValue.serverTimestamp(),
-      'friendUid': widget.friendUid,
-      'friendName': widget.friendName,
-      'message': '',
-      'image': downloadURL,
-      'uid':currentUserId
-    }).then((value) {
-      _textController.text = '';
-    });
+    send('', ImageURL, '');
   }
 
   @override
@@ -81,6 +114,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Nút chọn hình ảnh
           IconButton(
               color: const Color(0xFF08C187),
               icon: const Icon(
@@ -111,15 +145,40 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                               )
                             ])))
                   }),
-          IconButton(
-              color: const Color(0xFF08C187),
-              icon: const Icon(
-                Icons.mic,
-                size: 35,
-              ),
-              onPressed: () => {}),
+          _isRecording
+              ? Row(
+                  children: [
+                    
+                    IconButton(
+                        color: Colors.redAccent,
+                        icon: const Icon(
+                          Icons.delete,
+                          size: 30,
+                        ),
+                        onPressed: () => {
+                              _audioRecorder.stop(),
+                              setState(() => _isRecording = false)
+                            }),
+                            IconButton(
+                        color: Colors.redAccent,
+                        icon: const Icon(
+                          Icons.send_sharp,
+                          size: 30,
+                        ),
+                        onPressed: () => {_stop()}),
+                  ],
+                )
+              : IconButton(
+                  color: const Color(0xFF08C187),
+                  icon: const Icon(
+                    Icons.mic,
+                    size: 35,
+                  ),
+                  onPressed: () => {_start(), _isRecording = true}),
+          // Nhập nội dung tin nhắn
           Expanded(
             child: TextField(
+              
               cursorColor: const Color(0xFF08C187),
               keyboardType: TextInputType.text,
               controller: _textController,
@@ -140,6 +199,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
               ),
             ),
           ),
+          // Nút gửi tin nhắn
           IconButton(
               color: const Color(0xFF08C187),
               icon: const Icon(

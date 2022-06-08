@@ -50,7 +50,8 @@ dependencies:
   image_picker: ^0.8.5+3
 
   audioplayers: ^0.20.1
-  flutter_sound: ^9.2.13
+  # flutter_sound: ^9.2.13
+  record: ^4.1.1
 
   flutter_chat_bubble: ^2.0.0
   mobx: ^2.0.7
