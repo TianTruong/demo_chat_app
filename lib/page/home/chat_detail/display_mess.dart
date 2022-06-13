@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, camel_case_types, prefer_const_constructors, sized_box_for_whitespace, avoid_print
 
-import 'package:demo_chat_app/bloc/data/data_bloc.dart';
 import 'package:demo_chat_app/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -20,7 +19,6 @@ class displayMessWidget extends StatefulWidget {
 }
 
 class _displayMessWidgetState extends State<displayMessWidget> {
-
   AudioPlayer advancedPlayer = AudioPlayer();
   String path =
       'https://firebasestorage.googleapis.com/v0/b/chatapp-ef0a7.appspot.com/o/sample-6s.mp3?alt=media&token=6afbc658-2733-45f4-be07-53a212211ce1';
@@ -85,8 +83,6 @@ class _displayMessWidgetState extends State<displayMessWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final dataBloc = BlocProvider.of<DataBloc>(context);
-
     return ChatBubble(
       clipper: ChatBubbleClipper6(
         nipSize: 5,
