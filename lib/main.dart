@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_print, use_key_in_widget_constructors
 
+import 'package:demo_chat_app/bloc/login/login_bloc.dart';
 import 'package:demo_chat_app/page/login/intro.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +40,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const Intro(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<LoginBloc>(
+            create: (context) => LoginBloc(),
+          ),
+          // BlocProvider<LoginBloc>(
+          //   create: (context) => LoginBloc(),
+          // ),
+
+        ],
+        child: Intro(),
+      ),
       theme: ThemeData(
           brightness: Brightness.light, primaryColor: const Color(0xFF08C187)),
     );

@@ -56,6 +56,8 @@ dependencies:
   flutter_chat_bubble: ^2.0.0
   mobx: ^2.0.7
   flutter_mobx: ^2.0.6+1
+  bloc: ^8.0.3
+  flutter_bloc: ^8.0.1
 
 dev_dependencies:
   flutter_test:

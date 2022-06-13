@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, prefer_const_constructors, avoid_print, non_constant_identifier_names
+// ignore_for_file: prefer_final_fields, prefer_const_constructors, avoid_print, non_constant_identifier_names, deprecated_member_use
 
 import 'dart:ui';
 
@@ -107,40 +107,7 @@ class _SignUpState extends State<SignUp> {
                             style: TextStyle(fontSize: 15),
                           ),
                         ),
-                        onPressed:
-                            SignUp
-                        //     () async {
-                        //   if (_gmailController.text == '' ||
-                        //       _passController.text == '' ||
-                        //       _confirmController.text == '' ||
-                        //       _gmailController.text.isEmpty ||
-                        //       _passController.text.isEmpty ||
-                        //       _confirmController.text.isEmpty) {
-                        //     ScaffoldMessenger.of(context).showSnackBar(
-                        //         const SnackBar(
-                        //             content: Text('Please enter some text')));
-                        //   } else {
-                        //     if (_passController.text ==
-                        //         _confirmController.text) {
-                        //           SignUp;
-                        //       // try {
-                        //       //   await FirebaseAuth.instance
-                        //       //       .createUserWithEmailAndPassword(
-                        //       //           email: _gmailController.text.trim(),
-                        //       //           password: _passController.text.trim());
-                        //       // } on FirebaseAuthException catch (e) {
-                        //       //   print(e);
-                        //       // }
-                        //     } else {
-                        //       print('2');
-                        //       ScaffoldMessenger.of(context).showSnackBar(
-                        //           const SnackBar(
-                        //               content: Text(
-                        //                   'xác nhận mật khẩu không đúng')));
-                        //     }
-                        //   }
-                        // }
-                        ),
+                        onPressed: CheckSignUp),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -161,14 +128,60 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  Future SignUp() async {
-
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _gmailController.text.trim(),
-          password: _passController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      print(e);
+  Future CheckSignUp() async {
+    if (_gmailController.text == '' ||
+        _passController.text == '' ||
+        _confirmController.text == '' ||
+        _gmailController.text.isEmpty ||
+        _passController.text.isEmpty ||
+        _confirmController.text.isEmpty) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                content: Text('Please enter some text'),
+                actions: [
+                  FlatButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                ],
+              ));
+    } else {
+      if (_passController.text != _confirmController.text) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: Text('xác nhận mật khẩu không đúng'),
+                  actions: [
+                    FlatButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ],
+                ));
+      } else {
+        try {
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+              email: _gmailController.text.trim(),
+              password: _passController.text.trim());
+        } on FirebaseAuthException catch (e) {
+          print(e);
+          showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                    content: Text(e.toString().trim()),
+                    actions: [
+                      FlatButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                    ],
+                  ));
+        }
+      }
     }
   }
 }

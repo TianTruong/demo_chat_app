@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_final_fields, avoid_print, non_constant_identifier_names, prefer_const_constructors
+// ignore_for_file: prefer_final_fields, avoid_print, non_constant_identifier_names, prefer_const_constructors, deprecated_member_use
 
 import 'dart:async';
 import 'dart:ui';
@@ -115,7 +115,7 @@ class _LoginGmailState extends State<LoginGmail> {
                                   style: TextStyle(fontSize: 15),
                                 ),
                               ),
-                              onPressed: SignIn),
+                              onPressed: CheckSignIn),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -143,13 +143,43 @@ class _LoginGmailState extends State<LoginGmail> {
     );
   }
 
-  Future SignIn() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _gmailController.text.trim(),
-          password: _passController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      print(e);
+  Future CheckSignIn() async {
+    if (_gmailController.text == '' ||
+        _passController.text == '' ||
+        _gmailController.text.isEmpty ||
+        _passController.text.isEmpty) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                content: Text('Please enter some text'),
+                actions: [
+                  FlatButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }),
+                ],
+              ));
+    } else {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: _gmailController.text.trim(),
+            password: _passController.text.trim());
+      } on FirebaseAuthException catch (e) {
+        print(e);
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: Text(e.toString().trim()),
+                  actions: [
+                    FlatButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ],
+                ));
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_chat_app/model/model.dart';
 import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,14 +55,21 @@ class _PeopleState extends State<People> {
                           (DocumentSnapshot document) {
                             Map<String, dynamic> data =
                                 document.data() as Map<String, dynamic>;
+                            Users users = Users(
+                              avatar: data['avatar'],
+                              name: data['name'],
+                              status: data['status'],
+                              uid: data['uid'],
+                            );
+
                             return Card(
                               child: ListTile(
                                 onTap: () => callChatDetailScreen(
-                                    context, data['name'], data['uid']),
-                                leading: data['avatar'] != ''
+                                    context, users.name, users.uid),
+                                leading: users.avatar != ''
                                     ? ClipOval(
                                         child: Image.network(
-                                          data['avatar'],
+                                          users.avatar,
                                           fit: BoxFit.cover,
                                           cacheHeight: 160,
                                           cacheWidth: 160,
@@ -75,8 +83,8 @@ class _PeopleState extends State<People> {
                                           cacheWidth: 160,
                                         ),
                                       ),
-                                title: Text(data['name']),
-                                subtitle: Text(data['status']),
+                                title: Text(users.name),
+                                subtitle: Text(users.status),
                                 trailing: const Icon(
                                     Icons.arrow_forward_ios_outlined),
                               ),
