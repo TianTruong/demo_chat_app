@@ -8,20 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:record/record.dart';
 
-// class SendWidget extends StatefulWidget {
-//   const SendWidget({Key? key}) : super(key: key);
-
-//   @override
-//   State<SendWidget> createState() => _SendWidgetState();
-// }
-
-// class _SendWidgetState extends State<SendWidget> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container();
-//   }
-// }
-
 class SendMessageWidget extends StatefulWidget {
   final chatDocId;
   final friendUid;

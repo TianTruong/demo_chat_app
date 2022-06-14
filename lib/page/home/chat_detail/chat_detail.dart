@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_chat_app/bloc/send/send_bloc.dart';
-import 'package:demo_chat_app/model/model.dart';
+import 'package:demo_chat_app/model/users.dart';
 import 'package:demo_chat_app/page/home/chat_detail/display_mess.dart';
 import 'package:demo_chat_app/page/home/chat_detail/send_mess.dart';
 import 'package:firebase_auth/firebase_auth.dart';

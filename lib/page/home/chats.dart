@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
 import 'package:demo_chat_app/state/chat_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:demo_chat_app/model/firstmessage.dart';
 
 class Chats extends StatefulWidget {
   const Chats({Key? key}) : super(key: key);
@@ -45,16 +45,19 @@ class _ChatsState extends State<Chats> {
                 SliverList(
                     delegate: SliverChildListDelegate(
                         chatState.messages.values.toList().map((data) {
+                  FirstMessage firstMessage = FirstMessage();
+                  firstMessage = firstMessage.map(data);
+
                   return Card(
                     child: ListTile(
-                        title: Text(data['friendName']),
-                        subtitle: Text(data['message']),
+                        title: Text(firstMessage.friendName),
+                        subtitle: Text(firstMessage.message),
                         trailing: const Icon(Icons.arrow_forward_ios_outlined),
-                        onTap: () => data['friendUid'] != currentUserId
-                            ? callChatDetailScreen(
-                                context, data['friendName'], data['friendUid'])
-                            : callChatDetailScreen(
-                                context, data['friendName'], data['uid'])),
+                        onTap: () => firstMessage.friendUid != currentUserId
+                            ? callChatDetailScreen(context,
+                                firstMessage.friendName, firstMessage.friendUid)
+                            : callChatDetailScreen(context,
+                                firstMessage.friendName, firstMessage.uid)),
                   );
                 }).toList()))
               ],

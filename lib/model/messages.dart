@@ -2,20 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Users {
-  final String avatar;
-  final String name;
-  final String status;
-  final String uid;
-
-  Users({
-    required this.avatar,
-    required this.name,
-    required this.status,
-    required this.uid,
-  });
-}
-
 class Messages {
   final createdOn;
   final friendName;
@@ -25,14 +11,15 @@ class Messages {
   final voice;
   final uid;
 
-  Messages(
-      {required this.createdOn,
-      required this.friendName,
-      required this.friendUid,
-      required this.image,
-      required this.message,
-      required this.voice,
-      required this.uid});
+  Messages({
+    this.createdOn,
+    this.friendName,
+    this.friendUid,
+    this.image,
+    this.message,
+    this.voice,
+    this.uid,
+  });
 
   factory Messages.fromJson(Map<String, dynamic> data) {
     return Messages(
@@ -45,6 +32,7 @@ class Messages {
       uid: data["uid"],
     );
   }
+  
   factory Messages.fromSnapshot(DocumentSnapshot snap) {
     Map<String, dynamic> data = snap.data()! as Map<String, dynamic>;
     return Messages(
@@ -68,5 +56,17 @@ class Messages {
       "voice": voice,
       "uid": uid,
     };
+  }
+
+  Messages map(dynamic data) {
+    return Messages(
+      createdOn: data['createdOn'],
+      friendName: data['friendName'],
+      friendUid: data['friendUid'],
+      image: data['image'],
+      message: data['message'],
+      voice: data['voice'],
+      uid: data['uid'],
+    );
   }
 }

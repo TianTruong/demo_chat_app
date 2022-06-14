@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo_chat_app/model/model.dart';
+import 'package:demo_chat_app/model/users.dart';
 import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,14 +53,11 @@ class _PeopleState extends State<People> {
                       delegate: SliverChildListDelegate(
                         snapshot.data!.docs.map(
                           (DocumentSnapshot document) {
-                            Map<String, dynamic> data =
-                                document.data() as Map<String, dynamic>;
-                            Users users = Users(
-                              avatar: data['avatar'],
-                              name: data['name'],
-                              status: data['status'],
-                              uid: data['uid'],
-                            );
+                            // Map<String, dynamic> data =
+                            //     document.data() as Map<String, dynamic>;
+
+                            Users users = Users();
+                            users = users.map(document.data());
 
                             return Card(
                               child: ListTile(

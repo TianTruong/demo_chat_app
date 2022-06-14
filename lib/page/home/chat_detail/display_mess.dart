@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, camel_case_types, prefer_const_constructors, sized_box_for_whitespace, avoid_print
 
-import 'package:demo_chat_app/model/model.dart';
+import 'package:demo_chat_app/model/messages.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
@@ -22,19 +21,11 @@ class _displayMessWidgetState extends State<displayMessWidget> {
   AudioPlayer advancedPlayer = AudioPlayer();
   String path =
       'https://firebasestorage.googleapis.com/v0/b/chatapp-ef0a7.appspot.com/o/sample-6s.mp3?alt=media&token=6afbc658-2733-45f4-be07-53a212211ce1';
-  late Messages mes;
+  Messages mes = Messages();
 
   @override
   void initState() {
-    mes = Messages(
-      createdOn: widget.data['createdOn'],
-      friendName: widget.data['friendName'],
-      friendUid: widget.data['friendUid'],
-      image: widget.data['image'],
-      message: widget.data['message'],
-      voice: widget.data['voice'],
-      uid: widget.data['uid'],
-    );
+    mes = mes.map(widget.data);
     super.initState();
   }
 
@@ -83,6 +74,8 @@ class _displayMessWidgetState extends State<displayMessWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // Messages? mes;
+    // mes!.map(widget.data);
     return ChatBubble(
       clipper: ChatBubbleClipper6(
         nipSize: 5,
