@@ -32,7 +32,7 @@ class Messages {
       uid: data["uid"],
     );
   }
-  
+
   factory Messages.fromSnapshot(DocumentSnapshot snap) {
     Map<String, dynamic> data = snap.data()! as Map<String, dynamic>;
     return Messages(

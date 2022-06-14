@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -42,7 +44,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<void> _onSaveImageEvent(
       SaveImageEvent event, Emitter<LoginState> emit) async {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
     final user = FirebaseAuth.instance.currentUser!;
 
     final ImagePicker _picker = ImagePicker();

@@ -12,7 +12,7 @@ class Users {
     this.status,
     this.uid,
   });
-  
+
   Users map(dynamic data) {
     return Users(
       avatar: data['avatar'],

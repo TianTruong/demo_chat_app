@@ -23,7 +23,7 @@ class FirstMessage {
       uid: data["uid"],
     );
   }
-  
+
   factory FirstMessage.fromSnapshot(DocumentSnapshot snap) {
     Map<String, dynamic> data = snap.data()! as Map<String, dynamic>;
     return FirstMessage(
