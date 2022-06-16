@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserName extends StatefulWidget {
   const UserName({Key? key}) : super(key: key);
@@ -82,7 +83,7 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                         children: [
                           ListTile(
                             leading: const Icon(Icons.camera_alt),
-                            title: const Text('Camera'),
+                            title: Text(AppLocalizations.of(context)!.camera),
                             onTap: () async {
                               Navigator.of(context).pop();
                               _saveImage(ImageSource.camera);
@@ -93,7 +94,7 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                           ),
                           ListTile(
                             leading: const Icon(Icons.image),
-                            title: const Text('Gallery'),
+                            title: Text(AppLocalizations.of(context)!.gallery),
                             onTap: () async {
                               Navigator.of(context).pop();
                               _saveImage(ImageSource.gallery);
@@ -160,7 +161,7 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                 return Padding(
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                   child: Text(
-                    'Continue',
+                    AppLocalizations.of(context)!.conti,
                     style: TextStyle(fontSize: 15),
                   ),
                 );
@@ -184,10 +185,10 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
             ),
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: Text(
-                'Exit',
+                AppLocalizations.of(context)!.exit,
                 style: TextStyle(fontSize: 15),
               ),
             ),

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:record/record.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SendMessageWidget extends StatefulWidget {
   final chatDocId;
@@ -68,7 +69,8 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                                 child: Column(children: [
                                   ListTile(
                                     leading: const Icon(Icons.camera_alt),
-                                    title: const Text('Camera'),
+                                    title: Text(
+                                        AppLocalizations.of(context)!.camera),
                                     onTap: () {
                                       Navigator.of(context).pop();
                                       sendBloc.add(SendImageEvent(
@@ -80,7 +82,8 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                                   ),
                                   ListTile(
                                     leading: const Icon(Icons.image),
-                                    title: const Text('Gallery'),
+                                    title: Text(
+                                        AppLocalizations.of(context)!.gallery),
                                     onTap: () {
                                       Navigator.of(context).pop();
                                       sendBloc.add(SendImageEvent(

@@ -2,10 +2,16 @@ import 'dart:ui';
 import 'package:demo_chat_app/page/login/sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Intro extends StatelessWidget {
+class Intro extends StatefulWidget {
   const Intro({Key? key}) : super(key: key);
 
+  @override
+  State<Intro> createState() => _IntroState();
+}
+
+class _IntroState extends State<Intro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,13 +111,13 @@ class LetStart extends StatelessWidget {
     return CupertinoButton(
       onPressed: () {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const LoginGmail()));
+            MaterialPageRoute(builder: (context) =>  LoginGmail()));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.chevron_right, color: Colors.white.withOpacity(0.5)),
-          Text('Let\'s Start',
+          Text(AppLocalizations.of(context)!.letstart,
               style: TextStyle(
                   color: Colors.white.withOpacity(0.5), fontSize: 25)),
         ],

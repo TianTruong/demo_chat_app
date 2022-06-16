@@ -4,6 +4,7 @@ import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class People extends StatefulWidget {
   const People({Key? key}) : super(key: key);
@@ -45,9 +46,9 @@ class _PeopleState extends State<People> {
               if (snapshot.hasData) {
                 return CustomScrollView(
                   slivers: [
-                    const CupertinoSliverNavigationBar(
+                    CupertinoSliverNavigationBar(
                       automaticallyImplyLeading: false,
-                      largeTitle: Text("People"),
+                      largeTitle: Text(AppLocalizations.of(context)!.people),
                     ),
                     SliverList(
                       delegate: SliverChildListDelegate(

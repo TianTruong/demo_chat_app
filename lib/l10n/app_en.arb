@@ -1,0 +1,26 @@
+{
+    "language": "English",
+    "message": "Hello {name}",
+    "@message": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "name": "Name",
+    "phone": "Phone",
+    "letstart": "Let's Start",
+    "signout": "Sign Out",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "chat": "Chats",
+    "people": "People",
+    "setting": "Settings",
+    "yes": "Yes",
+    "no": "No",
+    "conti": "Continue",
+    "exit": "Exit",
+    "camera": "Camera",
+    "gallery": "Gallery"
+}

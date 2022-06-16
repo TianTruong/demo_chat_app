@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,10 +36,27 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    Locale? _locale;
+
+    void SetLocale(Locale locale) {
+      setState(() {
+        _locale = locale;
+      });
+    }
+
     return MaterialApp(
+      locale: Locale.fromSubtags(languageCode: 'vi'),
+      // locale: _locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       home: MultiBlocProvider(
         providers: [
@@ -46,6 +64,7 @@ class MyApp extends StatelessWidget {
             create: (context) => LoginBloc(),
           ),
         ],
+        // child: Intro(SetLocale),
         child: Intro(),
       ),
       theme: ThemeData(

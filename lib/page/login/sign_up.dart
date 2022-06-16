@@ -6,6 +6,7 @@ import 'package:demo_chat_app/page/login/user_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -99,11 +100,11 @@ class _SignUpState extends State<SignUp> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0)),
                         ),
-                        child: const Padding(
+                        child: Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 30, vertical: 10),
                           child: Text(
-                            'Sign Up',
+                            AppLocalizations.of(context)!.signup,
                             style: TextStyle(fontSize: 15),
                           ),
                         ),
@@ -113,7 +114,7 @@ class _SignUpState extends State<SignUp> {
                       children: [
                         const Text('Have an account? '),
                         CupertinoButton(
-                            child: const Text('Sign In',
+                            child: Text(AppLocalizations.of(context)!.signin,
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () {
                               Navigator.pop(context);

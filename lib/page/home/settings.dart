@@ -1,10 +1,23 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, unnecessary_string_interpolations
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, unnecessary_string_interpolations, deprecated_member_use
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  
+  String language = 'en';
+  var items = [
+    'en',
+    'vi',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +58,64 @@ class SettingsScreen extends StatelessWidget {
             ),
             Card(child: ListTile(title: Text('ID: ${user.uid}'))),
             Card(child: ListTile(title: Text('Gmail: ${user.email!}'))),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15)),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: DropdownButton(
+                  value: language,
+                  icon: const Icon(Icons.arrow_drop_down),
+                  items: items.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  isExpanded: true,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      language = newValue!;
+                    });
+                  },
+                ),
+              ),
+            ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: const Color(0xFF08C187),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0)),
                 ),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   child: Text(
-                    'Sign Out',
+                    AppLocalizations.of(context)!.signout,
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
                 onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            content: Text('Log Out?'),
+                            actions: [
+                              FlatButton(
+                                  child:
+                                      Text(AppLocalizations.of(context)!.yes),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    FirebaseAuth.instance.signOut();
+                                  }),
+                              FlatButton(
+                                  child: Text(AppLocalizations.of(context)!.no),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  }),
+                            ],
+                          ));
                 }),
           ],
         ),

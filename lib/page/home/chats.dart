@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:demo_chat_app/model/firstmessage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Chats extends StatefulWidget {
   const Chats({Key? key}) : super(key: key);
@@ -38,9 +39,9 @@ class _ChatsState extends State<Chats> {
     return Observer(
         builder: (BuildContext context) => CustomScrollView(
               slivers: [
-                const CupertinoSliverNavigationBar(
+                CupertinoSliverNavigationBar(
                   automaticallyImplyLeading: false,
-                  largeTitle: Text("Chats"),
+                  largeTitle: Text(AppLocalizations.of(context)!.chat),
                 ),
                 SliverList(
                     delegate: SliverChildListDelegate(

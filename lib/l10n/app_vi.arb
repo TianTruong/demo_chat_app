@@ -1,0 +1,26 @@
+{
+    "language": "Tiếng Việt",
+    "message": "Xin chào {name}",
+    "@message": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "name": "Tên",
+    "phone": "Số điện thoại",
+    "letstart": "Bắt đầu",
+    "signout": "Đăng xuất",
+    "signin": "Đăng nhập",
+    "signup": "Đăng ký",
+    "chat": "Trò chuyện",
+    "people": "Danh bạ",
+    "setting": "Cài Đặt",
+    "yes": "Có",
+    "no": "Không",
+    "conti": "Tiếp tục",
+    "exit": "Thoát",
+    "camera": "Máy ảnh",
+    "gallery": "Thư viện"
+}

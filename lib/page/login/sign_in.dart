@@ -9,6 +9,7 @@ import 'package:demo_chat_app/page/login/user_name.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginGmail extends StatefulWidget {
   const LoginGmail({Key? key}) : super(key: key);
@@ -107,11 +108,11 @@ class _LoginGmailState extends State<LoginGmail> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30.0)),
                               ),
-                              child: const Padding(
+                              child: Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 30, vertical: 10),
                                 child: Text(
-                                  'Sign In',
+                                  AppLocalizations.of(context)!.signin,
                                   style: TextStyle(fontSize: 15),
                                 ),
                               ),
@@ -121,7 +122,8 @@ class _LoginGmailState extends State<LoginGmail> {
                             children: [
                               const Text('No account? '),
                               CupertinoButton(
-                                  child: const Text('Sign Up',
+                                  child: Text(
+                                      AppLocalizations.of(context)!.signup,
                                       style: TextStyle(color: Colors.white)),
                                   onPressed: () {
                                     Navigator.push(
