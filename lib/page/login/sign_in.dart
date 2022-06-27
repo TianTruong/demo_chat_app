@@ -12,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginGmail extends StatefulWidget {
-  const LoginGmail({Key? key}) : super(key: key);
+  const LoginGmail(this.SetLocale, {Key? key}) : super(key: key);
+  final void Function(Locale locale) SetLocale;
 
   @override
   State<LoginGmail> createState() => _LoginGmailState();
@@ -75,9 +76,9 @@ class _LoginGmailState extends State<LoginGmail> {
 
                 if (snapshot.hasData) {
                   if (FirebaseAuth.instance.currentUser!.displayName == null) {
-                    return UserName();
+                    return UserName(widget.SetLocale);
                   }
-                  return HomePage();
+                  return HomePage(widget.SetLocale);
                 }
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -130,7 +131,7 @@ class _LoginGmailState extends State<LoginGmail> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const SignUp()));
+                                                SignUp(widget.SetLocale)));
                                   })
                             ],
                           )

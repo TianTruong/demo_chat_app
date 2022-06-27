@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, use_key_in_widget_constructors, prefer_const_constructors
 
+import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/bloc/login/login_bloc.dart';
 import 'package:demo_chat_app/page/login/intro.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -53,8 +54,8 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
-      locale: Locale.fromSubtags(languageCode: 'vi'),
-      // locale: _locale,
+      // locale: Locale.fromSubtags(languageCode: 'vi'),
+      locale: _locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
@@ -63,9 +64,12 @@ class _MyAppState extends State<MyApp> {
           BlocProvider<LoginBloc>(
             create: (context) => LoginBloc(),
           ),
+          BlocProvider<CheckBloc>(
+            create: (context) => CheckBloc(),
+          ),
         ],
-        // child: Intro(SetLocale),
-        child: Intro(),
+        child: Intro(SetLocale),
+        // child: Intro(),
       ),
       theme: ThemeData(
           brightness: Brightness.light, primaryColor: const Color(0xFF08C187)),

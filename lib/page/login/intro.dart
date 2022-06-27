@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, avoid_print
+
 import 'dart:ui';
 import 'package:demo_chat_app/page/login/sign_in.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Intro extends StatefulWidget {
-  const Intro({Key? key}) : super(key: key);
+  const Intro(this.SetLocale, {Key? key}) : super(key: key);
+  final void Function(Locale locale) SetLocale;
 
   @override
   State<Intro> createState() => _IntroState();
@@ -52,7 +55,7 @@ class _IntroState extends State<Intro> {
                     ],
                   ),
                   const TermAndConditions(),
-                  const LetStart()
+                  LetStart(SetLocale: widget.SetLocale)
                 ],
               ),
             ),
@@ -103,15 +106,24 @@ class TermAndConditions extends StatelessWidget {
   }
 }
 
-class LetStart extends StatelessWidget {
-  const LetStart({Key? key}) : super(key: key);
+class LetStart extends StatefulWidget {
+  const LetStart({required this.SetLocale, Key? key}) : super(key: key);
+  final void Function(Locale locale) SetLocale;
 
+  @override
+  State<LetStart> createState() => _LetStartState();
+}
+
+class _LetStartState extends State<LetStart> {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
       onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) =>  LoginGmail()));
+        print(Localizations.localeOf(context).toString());
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => LoginGmail(widget.SetLocale)));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

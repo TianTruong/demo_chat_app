@@ -46,6 +46,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
   @override
   Widget build(BuildContext context) {
     final sendBloc = BlocProvider.of<SendBloc>(context);
+    
     return BlocBuilder<SendBloc, SendState>(
       builder: (context, state) {
         return Padding(

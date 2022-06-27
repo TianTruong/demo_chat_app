@@ -12,7 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserName extends StatefulWidget {
-  const UserName({Key? key}) : super(key: key);
+  const UserName(this.SetLocale, {Key? key}) : super(key: key);
+  final void Function(Locale locale) SetLocale;
 
   @override
   State<UserName> createState() => _UserNameState();
@@ -28,13 +29,15 @@ class _UserNameState extends State<UserName> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-          create: (context) => LoginBloc(), child: WireFrameUserName()),
+          create: (context) => LoginBloc(),
+          child: WireFrameUserName(widget.SetLocale)),
     );
   }
 }
 
 class WireFrameUserName extends StatefulWidget {
-  const WireFrameUserName({Key? key}) : super(key: key);
+  const WireFrameUserName(this.SetLocale, {Key? key}) : super(key: key);
+  final void Function(Locale locale) SetLocale;
 
   @override
   State<WireFrameUserName> createState() => _WireFrameUserNameState();
@@ -177,7 +180,9 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                   .add(CreateUserEvent(_nameController.text, avatar, user.uid));
 
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HomePage(widget.SetLocale)));
             }),
         ElevatedButton(
             style: ElevatedButton.styleFrom(

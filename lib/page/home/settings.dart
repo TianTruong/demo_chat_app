@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({Key? key, required this.SetLocale}) : super(key: key);
+  final void Function(Locale locale) SetLocale;
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  
   String language = 'en';
   var items = [
     'en',
@@ -58,6 +58,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             Card(child: ListTile(title: Text('ID: ${user.uid}'))),
             Card(child: ListTile(title: Text('Gmail: ${user.email!}'))),
+            IconButton(
+                onPressed: () {
+                  widget.SetLocale(
+                      const Locale.fromSubtags(languageCode: 'vi'));
+                },
+                icon: Icon(Icons.arrow_forward)),
             Container(
               decoration: BoxDecoration(
                   border: Border.all(width: 1, color: Colors.grey),
@@ -78,6 +84,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onChanged: (String? newValue) {
                     setState(() {
                       language = newValue!;
+
+                      print(language);
+
+                      widget.SetLocale(
+                          Locale.fromSubtags(languageCode: language));
+
+                      print(Localizations.localeOf(context).toString());
                     });
                   },
                 ),

@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  const SignUp(this.SetLocale, {Key? key}) : super(key: key);
+  final void Function(Locale locale) SetLocale;
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -73,7 +74,7 @@ class _SignUpState extends State<SignUp> {
                 }
 
                 if (snapshot.hasData) {
-                  return UserName();
+                  return UserName(widget.SetLocale);
                 }
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,

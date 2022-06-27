@@ -1,13 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/model/users.dart';
 import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class People extends StatefulWidget {
-  const People({Key? key}) : super(key: key);
+  const People(this.SetChat, {Key? key}) : super(key: key);
+  final void Function(String friendUid, String friendName) SetChat;
 
   @override
   State<People> createState() => _PeopleState();
@@ -62,8 +65,17 @@ class _PeopleState extends State<People> {
 
                             return Card(
                               child: ListTile(
-                                onTap: () => callChatDetailScreen(
-                                    context, users.name, users.uid),
+                                onTap: () async {
+                                  MediaQuery.of(context).size.width < 600
+                                      ? callChatDetailScreen(
+                                          context, users.name, users.uid)
+                                      : {
+                                          context.read<CheckBloc>().add(
+                                              SetChatDocIdEvent(
+                                                  users.uid, users.name)),
+                                          widget.SetChat(users.uid, users.name),
+                                        };
+                                },
                                 leading: users.avatar != ''
                                     ? ClipOval(
                                         child: Image.network(
