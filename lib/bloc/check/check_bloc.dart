@@ -19,11 +19,6 @@ class CheckBloc extends Bloc<CheckEvent, CheckState> {
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
     String chatDocId = '';
 
-    final state = this.state;
-    print('lllllllllllllllllllllllllllllllllllllllll');
-    print(state);
-    print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-
     await chats
         .where('users', isEqualTo: {event.friendUid: null, currentUserId: null})
         .limit(1)
@@ -31,11 +26,8 @@ class CheckBloc extends Bloc<CheckEvent, CheckState> {
         .then(
           (QuerySnapshot querySnapshot) async {
             if (querySnapshot.docs.isNotEmpty) {
-              // event.
               chatDocId = querySnapshot.docs.single.id;
-              print('aaa');
               print(chatDocId);
-              print('bbb');
             } else {
               await chats
                   .add({

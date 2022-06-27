@@ -10,8 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage(this.abc, {Key? key}) : super(key: key);
-  final void Function(Locale locale) abc;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -24,9 +23,9 @@ class _HomePageState extends State<HomePage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < 600) {
-            return HomeViewSmall(widget.abc);
+            return HomeViewSmall();
           } else {
-            return HomeViewLarge(widget.abc);
+            return HomeViewLarge();
           }
         },
       ),
@@ -35,8 +34,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomeViewSmall extends StatefulWidget {
-  const HomeViewSmall(this.abc, {Key? key}) : super(key: key);
-  final void Function(Locale locale) abc;
+  const HomeViewSmall({Key? key}) : super(key: key);
 
   @override
   State<HomeViewSmall> createState() => _HomeViewSmallState();
@@ -60,7 +58,7 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
     var screens = [
       Chats(SetChat),
       People(SetChat),
-      SettingsScreen(SetLocale: widget.abc)
+      SettingsScreen()
     ];
     return Scaffold(
       bottomNavigationBar: CupertinoTabScaffold(
@@ -90,8 +88,7 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
 }
 
 class HomeViewLarge extends StatefulWidget {
-  const HomeViewLarge(this.abc, {Key? key}) : super(key: key);
-  final void Function(Locale locale) abc;
+  const HomeViewLarge({Key? key}) : super(key: key);
   @override
   State<HomeViewLarge> createState() => _HomeViewLargeState();
 }
@@ -114,7 +111,7 @@ class _HomeViewLargeState extends State<HomeViewLarge> {
     var screens = [
       Chats(SetChat),
       People(SetChat),
-      SettingsScreen(SetLocale: widget.abc)
+      SettingsScreen()
     ];
 
     return BlocProvider(

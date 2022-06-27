@@ -74,7 +74,7 @@ class _SignUpState extends State<SignUp> {
                 }
 
                 if (snapshot.hasData) {
-                  return UserName(widget.SetLocale);
+                  return UserName();
                 }
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -76,9 +76,9 @@ class _LoginGmailState extends State<LoginGmail> {
 
                 if (snapshot.hasData) {
                   if (FirebaseAuth.instance.currentUser!.displayName == null) {
-                    return UserName(widget.SetLocale);
+                    return UserName();
                   }
-                  return HomePage(widget.SetLocale);
+                  return HomePage();
                 }
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
