@@ -19,26 +19,12 @@ class People extends StatefulWidget {
 class _PeopleState extends State<People> {
   var currentUser = FirebaseAuth.instance.currentUser!.uid;
 
-  void callChatDetailScreen(BuildContext context, String name, String uid) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ChatDetail(
-                  friendName: name,
-                  friendUid: uid,
-                )));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .where('uid', isNotEqualTo: currentUser)
-                .snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            stream: FirebaseFirestore.instance.collection('users').where('uid', isNotEqualTo: currentUser).snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return const Text('Something went wrong.');
               }
@@ -66,15 +52,8 @@ class _PeopleState extends State<People> {
                             return Card(
                               child: ListTile(
                                 onTap: () async {
-                                  MediaQuery.of(context).size.width < 600
-                                      ? callChatDetailScreen(
-                                          context, users.name, users.uid)
-                                      : {
-                                          context.read<CheckBloc>().add(
-                                              SetChatDocIdEvent(
-                                                  users.uid, users.name)),
-                                          widget.SetChat(users.uid, users.name),
-                                        };
+                                  context.read<CheckBloc>().add(SetChatDocIdEvent(users.uid, users.name));
+                                  widget.SetChat(users.uid, users.name);
                                 },
                                 leading: users.avatar != ''
                                     ? ClipOval(
@@ -95,8 +74,7 @@ class _PeopleState extends State<People> {
                                       ),
                                 title: Text(users.name),
                                 subtitle: Text(users.status),
-                                trailing: const Icon(
-                                    Icons.arrow_forward_ios_outlined),
+                                trailing: const Icon(Icons.arrow_forward_ios_outlined),
                               ),
                             );
                           },

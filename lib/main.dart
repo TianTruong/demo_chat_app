@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print, use_key_in_widget_constructors, prefer_const_constructors
 
+import 'package:demo_chat_app/app.dart';
 import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/bloc/locale/locale_bloc.dart';
 import 'package:demo_chat_app/bloc/login/login_bloc.dart';
@@ -9,7 +10,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,58 +38,8 @@ Future<void> main() async {
 
   runApp(BlocProvider(
     create: (context) => LocaleBloc(),
-    child: MyApp(),
+    child: App(),
   ));
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
 
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    Locale? _locale;
-
-    void SetLocale(Locale locale) {
-      setState(() {
-        _locale = locale;
-      });
-    }
-
-    return BlocBuilder<LocaleBloc, LocaleState>(
-      builder: (context, state) {
-        if (state is SetLocaleState) _locale = state.locale;
-        return MaterialApp(
-          // locale: Locale.fromSubtags(languageCode: 'vi'),
-          locale: _locale,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          debugShowCheckedModeBanner: false,
-          home: MultiBlocProvider(
-            providers: [
-              BlocProvider<LoginBloc>(
-                create: (context) => LoginBloc(),
-              ),
-              BlocProvider<CheckBloc>(
-                create: (context) => CheckBloc(),
-              ),
-              BlocProvider<SendBloc>(
-                create: (context) => SendBloc(),
-              ),
-              BlocProvider<LocaleBloc>(
-                create: (context) => LocaleBloc(),
-              ),
-            ],
-            child: Intro(SetLocale),
-            // child: Intro(),
-          ),
-          theme: ThemeData(
-              brightness: Brightness.light,
-              primaryColor: const Color(0xFF08C187)),
-        );
-      },
-    );
-  }
-}

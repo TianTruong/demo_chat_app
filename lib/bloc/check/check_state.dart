@@ -5,7 +5,13 @@ class CheckState {
   const CheckState();
 }
 
+class CleanChatIdState extends CheckState {
+
+}
+
 class SetChatDocIdState extends CheckState {
   final String ChatDocID;
-  const SetChatDocIdState({required this.ChatDocID});
+  final String friendUid;
+  final String friendName;
+  const SetChatDocIdState({required this.ChatDocID, required this.friendUid, required this.friendName});
 }

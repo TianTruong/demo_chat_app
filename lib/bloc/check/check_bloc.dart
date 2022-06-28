@@ -15,6 +15,7 @@ class CheckBloc extends Bloc<CheckEvent, CheckState> {
 
   void _onCreateUserEvent(
       SetChatDocIdEvent event, Emitter<CheckState> emit) async {
+    emit(CleanChatIdState());
     CollectionReference chats = FirebaseFirestore.instance.collection('chats');
     final currentUserId = FirebaseAuth.instance.currentUser?.uid;
     String chatDocId = '';
@@ -45,6 +46,6 @@ class CheckBloc extends Bloc<CheckEvent, CheckState> {
         )
         .catchError((error) {});
 
-    emit(SetChatDocIdState(ChatDocID: chatDocId));
+    emit(SetChatDocIdState(ChatDocID: chatDocId, friendUid: event.friendUid, friendName: event.friendName));
   }
 }

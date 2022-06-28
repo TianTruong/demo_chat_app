@@ -44,6 +44,17 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
   String? friendUid;
   String? friendName;
 
+  void callChatDetailScreen(BuildContext context, String chatId, String name, String uid) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatDetail(
+          chatDocId: chatId,
+          friendName: name,
+          friendUid: uid,
+        ),),);
+  }
+
   void SetChat(String _friendUid, String _friendName) {
     setState(() {
       friendUid = _friendUid;
@@ -60,28 +71,37 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
       People(SetChat),
       SettingsScreen()
     ];
-    return Scaffold(
-      bottomNavigationBar: CupertinoTabScaffold(
-        resizeToAvoidBottomInset: true,
-        tabBar: CupertinoTabBar(
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.chat_bubble_2_fill,
-                  color: Color(0xFF08C187)),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.person_alt_circle,
-                  color: Color(0xFF08C187)),
-            ),
-            BottomNavigationBarItem(
-              icon:
-                  Icon(CupertinoIcons.settings_solid, color: Color(0xFF08C187)),
-            )
-          ],
+    return BlocListener<CheckBloc, CheckState>(
+      listener: (context, state) {
+        if(state is SetChatDocIdState) {
+          if(MediaQuery.of(context).size.width < 600) {
+            callChatDetailScreen(context, state.ChatDocID, state.friendName,state.friendUid);
+          }
+        }
+      },
+      child: Scaffold(
+        bottomNavigationBar: CupertinoTabScaffold(
+          resizeToAvoidBottomInset: true,
+          tabBar: CupertinoTabBar(
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.chat_bubble_2_fill,
+                    color: Color(0xFF08C187)),
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(CupertinoIcons.person_alt_circle,
+                    color: Color(0xFF08C187)),
+              ),
+              BottomNavigationBarItem(
+                icon:
+                    Icon(CupertinoIcons.settings_solid, color: Color(0xFF08C187)),
+              )
+            ],
+          ),
+          tabBuilder: (BuildContext context, int index) {
+            return screens[index];
+          },
         ),
-        tabBuilder: (BuildContext context, int index) {
-          return screens[index];
-        },
       ),
     );
   }
@@ -114,62 +134,63 @@ class _HomeViewLargeState extends State<HomeViewLarge> {
       SettingsScreen()
     ];
 
-    return BlocProvider(
-      create: (context) => CheckBloc(),
-      child: Scaffold(
-        body: Row(
-          children: [
-            Expanded(
-              flex: 2,
-              child: LayoutBuilder(
-                  builder: (context, constraints) => Scaffold(
-                        bottomNavigationBar: CupertinoTabScaffold(
-                          resizeToAvoidBottomInset: true,
-                          tabBar: CupertinoTabBar(
-                            items: const [
-                              BottomNavigationBarItem(
-                                icon: Icon(CupertinoIcons.chat_bubble_2_fill,
-                                    color: Color(0xFF08C187)),
-                              ),
-                              BottomNavigationBarItem(
-                                icon: Icon(CupertinoIcons.person_alt_circle,
-                                    color: Color(0xFF08C187)),
-                              ),
-                              BottomNavigationBarItem(
-                                icon: Icon(CupertinoIcons.settings_solid,
-                                    color: Color(0xFF08C187)),
-                              )
-                            ],
-                          ),
-                          tabBuilder: (BuildContext context, int index) {
-                            return screens[index];
-                          },
-                        ),
-                      )),
-            ),
-            Expanded(
-              flex: 3,
-              child: LayoutBuilder(
-                  builder: (context, constraints) =>
-                      (friendUid == null || friendName == null)
-                          ? Container(
-                              color: Colors.white,
-                              child: Center(
-                                child: Image.asset('images/whatsapp.png',
-                                    color: Colors.grey.withOpacity(0.2)),
-                              ),
+    return Scaffold(
+      body: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: LayoutBuilder(
+                builder: (context, constraints) => Scaffold(
+                      bottomNavigationBar: CupertinoTabScaffold(
+                        resizeToAvoidBottomInset: true,
+                        tabBar: CupertinoTabBar(
+                          items: const [
+                            BottomNavigationBarItem(
+                              icon: Icon(CupertinoIcons.chat_bubble_2_fill,
+                                  color: Color(0xFF08C187)),
+                            ),
+                            BottomNavigationBarItem(
+                              icon: Icon(CupertinoIcons.person_alt_circle,
+                                  color: Color(0xFF08C187)),
+                            ),
+                            BottomNavigationBarItem(
+                              icon: Icon(CupertinoIcons.settings_solid,
+                                  color: Color(0xFF08C187)),
                             )
-                          : BlocBuilder<CheckBloc, CheckState>(
-                              builder: (context, state) {
+                          ],
+                        ),
+                        tabBuilder: (BuildContext context, int index) {
+                          return screens[index];
+                        },
+                      ),
+                    )),
+          ),
+          Expanded(
+            flex: 3,
+            child: LayoutBuilder(
+                builder: (context, constraints) =>
+                    (friendUid == null || friendName == null)
+                        ? Container(
+                            color: Colors.white,
+                            child: Center(
+                              child: Image.asset('images/whatsapp.png',
+                                  color: Colors.grey.withOpacity(0.2)),
+                            ),
+                          )
+                        : BlocBuilder<CheckBloc, CheckState>(
+                            builder: (context, state) {
+                              if (state is SetChatDocIdState) {
                                 return ChatDetail(
+                                  chatDocId: state.ChatDocID,
                                   friendUid: friendUid,
                                   friendName: friendName,
                                 );
-                              },
-                            )),
-            ),
-          ],
-        ),
+                              }
+                              return Container();
+                            },
+                          )),
+          ),
+        ],
       ),
     );
   }
