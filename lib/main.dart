@@ -3,6 +3,7 @@
 import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/bloc/locale/locale_bloc.dart';
 import 'package:demo_chat_app/bloc/login/login_bloc.dart';
+import 'package:demo_chat_app/bloc/send/send_bloc.dart';
 import 'package:demo_chat_app/page/login/intro.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,12 @@ class _MyAppState extends State<MyApp> {
               ),
               BlocProvider<CheckBloc>(
                 create: (context) => CheckBloc(),
+              ),
+              BlocProvider<SendBloc>(
+                create: (context) => SendBloc(),
+              ),
+              BlocProvider<LocaleBloc>(
+                create: (context) => LocaleBloc(),
               ),
             ],
             child: Intro(SetLocale),

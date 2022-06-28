@@ -52,7 +52,6 @@
 
 //         return BlocListener<CheckBloc, CheckState>(
 //           listener: (context, state) {
-//             // TODO: implement listener
 //             if (state is SetChatDocIdState) abc = state.ChatDocID;
 //           },
 //           child: StreamBuilder<QuerySnapshot>(
@@ -137,7 +136,6 @@
 //   }
 // }
 
-
 // ignore_for_file: prefer_typing_uninitialized_variables, prefer_const_constructors, avoid_print, prefer_final_fields, no_logic_in_create_state, non_constant_identifier_names, sized_box_for_whitespace, prefer_const_constructors_in_immutables, unused_field, curly_braces_in_flow_control_structures
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -148,39 +146,43 @@ import 'package:demo_chat_app/page/home/chat_detail/send_mess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// class ChatDetail extends StatefulWidget {
+//   ChatDetail({Key? key, this.friendUid, this.friendName}) : super(key: key);
+//   final friendUid;
+//   final friendName;
+
+//   @override
+//   _ChatDetailState createState() => _ChatDetailState();
+// }
+
+// class _ChatDetailState extends State<ChatDetail> {
+//   @override
+//   Widget build(BuildContext context) {
+//     // if (MediaQuery.of(context).size.width < 600) {
+//     //   return BlocProvider(
+//     //     create: (context) => CheckBloc(),
+//     //     child: Demo(friendName: widget.friendName, friendUid: widget.friendUid),
+//     //   );
+//     // } else {
+//     //   return Demo(friendName: widget.friendName, friendUid: widget.friendUid);
+//     // }
+
+//       return Demo(friendName: widget.friendName, friendUid: widget.friendUid);
+
+//   }
+// }
+
 class ChatDetail extends StatefulWidget {
-  ChatDetail({Key? key, this.friendUid, this.friendName}) : super(key: key);
+  const ChatDetail({Key? key, this.friendUid, this.friendName})
+      : super(key: key);
   final friendUid;
   final friendName;
 
   @override
-  _ChatDetailState createState() => _ChatDetailState();
+  State<ChatDetail> createState() => _ChatDetailState();
 }
 
 class _ChatDetailState extends State<ChatDetail> {
-  @override
-  Widget build(BuildContext context) {
-    if (MediaQuery.of(context).size.width < 600) {
-      return BlocProvider(
-        create: (context) => CheckBloc(),
-        child: Demo(friendName: widget.friendName, friendUid: widget.friendUid),
-      );
-    } else {
-      return Demo(friendName: widget.friendName, friendUid: widget.friendUid);
-    }
-  }
-}
-
-class Demo extends StatefulWidget {
-  const Demo({Key? key, this.friendUid, this.friendName}) : super(key: key);
-  final friendUid;
-  final friendName;
-
-  @override
-  State<Demo> createState() => _DemoState();
-}
-
-class _DemoState extends State<Demo> {
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
   var _textController = TextEditingController();
   String? chatDocId;
