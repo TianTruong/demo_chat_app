@@ -45,136 +45,130 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final sendBloc = BlocProvider.of<SendBloc>(context);
-    
-    return BlocBuilder<SendBloc, SendState>(
-      builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // Nút chọn hình ảnh
+          IconButton(
+              color: const Color(0xFF08C187),
+              icon: const Icon(
+                Icons.image,
+                size: 35,
+              ),
+              onPressed: () => {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) => Container(
+                        height: 150,
+                        child: Column(children: [
+                          ListTile(
+                            leading: const Icon(Icons.camera_alt),
+                            title: Text(
+                                AppLocalizations.of(context)!.camera),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              context.read<SendBloc>().add(SendImageEvent(
+                                  widget.chatDocId,
+                                  widget.friendUid,
+                                  widget.friendName,
+                                  ImageSource.camera));
+                            },
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.image),
+                            title: Text(
+                                AppLocalizations.of(context)!.gallery),
+                            onTap: () {
+                              Navigator.of(context).pop();
+                              context.read<SendBloc>().add(SendImageEvent(
+                                  widget.chatDocId,
+                                  widget.friendUid,
+                                  widget.friendName,
+                                  ImageSource.gallery));
+                            },
+                          )
+                        ])))
+              }),
+          // Nút gửi voice
+          _isRecording
+              ? Row(
             children: [
-              // Nút chọn hình ảnh
               IconButton(
-                  color: const Color(0xFF08C187),
+                  color: Colors.redAccent,
                   icon: const Icon(
-                    Icons.image,
-                    size: 35,
+                    Icons.delete,
+                    size: 30,
                   ),
                   onPressed: () => {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) => Container(
-                                height: 150,
-                                child: Column(children: [
-                                  ListTile(
-                                    leading: const Icon(Icons.camera_alt),
-                                    title: Text(
-                                        AppLocalizations.of(context)!.camera),
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                      sendBloc.add(SendImageEvent(
-                                          widget.chatDocId,
-                                          widget.friendUid,
-                                          widget.friendName,
-                                          ImageSource.camera));
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(Icons.image),
-                                    title: Text(
-                                        AppLocalizations.of(context)!.gallery),
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                      sendBloc.add(SendImageEvent(
-                                          widget.chatDocId,
-                                          widget.friendUid,
-                                          widget.friendName,
-                                          ImageSource.gallery));
-                                    },
-                                  )
-                                ])))
-                      }),
-              // Nút gửi voice
-              _isRecording
-                  ? Row(
-                      children: [
-                        IconButton(
-                            color: Colors.redAccent,
-                            icon: const Icon(
-                              Icons.delete,
-                              size: 30,
-                            ),
-                            onPressed: () => {
-                                  _audioRecorder.stop(),
-                                  setState(() => _isRecording = false)
-                                }),
-                        IconButton(
-                            color: Colors.redAccent,
-                            icon: const Icon(
-                              Icons.send_sharp,
-                              size: 30,
-                            ),
-                            onPressed: () => {
-                                  sendBloc.add(SendVoiceEvent(
-                                      widget.chatDocId,
-                                      widget.friendUid,
-                                      widget.friendName,
-                                      _audioRecorder)),
-                                  _isRecording = false
-                                }),
-                      ],
-                    )
-                  : IconButton(
-                      color: const Color(0xFF08C187),
-                      icon: const Icon(
-                        Icons.mic,
-                        size: 35,
-                      ),
-                      onPressed: () => {_start(), _isRecording = true}),
-              // Nhập nội dung tin nhắn
-              Expanded(
-                child: TextField(
-                  cursorColor: const Color(0xFF08C187),
-                  keyboardType: TextInputType.text,
-                  controller: _textController,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.all(5),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: const BorderSide(
-                            color: Color(0xFF08C187), width: 3)),
-
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide:
-                          const BorderSide(color: Color(0xFF08C187), width: 3),
-                    ),
-                    hintText: 'Nhập tin nhắn ...',
-                    // labelText: 'Name'
-                  ),
-                ),
-              ),
-              // Nút gửi tin nhắn
+                    _audioRecorder.stop(),
+                    setState(() => _isRecording = false)
+                  }),
               IconButton(
-                  color: const Color(0xFF08C187),
+                  color: Colors.redAccent,
                   icon: const Icon(
                     Icons.send_sharp,
-                    size: 35,
+                    size: 30,
                   ),
                   onPressed: () => {
-                        sendBloc.add(SendMessEvent(
-                            widget.chatDocId,
-                            widget.friendUid,
-                            widget.friendName,
-                            _textController.text)),
-                        _textController.clear()
-                      })
+                    context.read<SendBloc>().add(SendVoiceEvent(
+                        widget.chatDocId,
+                        widget.friendUid,
+                        widget.friendName,
+                        _audioRecorder)),
+                    _isRecording = false
+                  }),
             ],
+          )
+              : IconButton(
+              color: const Color(0xFF08C187),
+              icon: const Icon(
+                Icons.mic,
+                size: 35,
+              ),
+              onPressed: () => {_start(), _isRecording = true}),
+          // Nhập nội dung tin nhắn
+          Expanded(
+            child: TextFormField(
+              cursorColor: const Color(0xFF08C187),
+              keyboardType: TextInputType.text,
+              controller: _textController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(5),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: const BorderSide(
+                        color: Color(0xFF08C187), width: 3)),
+
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide:
+                  const BorderSide(color: Color(0xFF08C187), width: 3),
+                ),
+                hintText: 'Nhập tin nhắn ...',
+                // labelText: 'Name'
+              ),
+            ),
           ),
-        );
-      },
+          // Nút gửi tin nhắn
+          IconButton(
+              color: const Color(0xFF08C187),
+              icon: const Icon(
+                Icons.send_sharp,
+                size: 35,
+              ),
+              onPressed: () => {
+                context.read<SendBloc>().add(SendMessEvent(
+                    widget.chatDocId,
+                    widget.friendUid,
+                    widget.friendName,
+                    _textController.text)),
+                _textController.clear()
+              })
+        ],
+      ),
     );
   }
 }

@@ -199,10 +199,8 @@ class _ChatDetailState extends State<ChatDetail> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: Center(
-              child: Text("Loading"),
-            ),
+          return Center(
+            child: Text("Loading"),
           );
         }
 
@@ -216,34 +214,27 @@ class _ChatDetailState extends State<ChatDetail> {
               centerTitle: true,
               actions: [IconButton(onPressed: () {}, icon: Icon(Icons.phone))],
             ),
-            body: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => SendBloc(),
-                ),
-              ],
-              child: SafeArea(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView(
-                        reverse: true,
-                        children: snapshot.data!.docs.map(
-                              (DocumentSnapshot document) {
-                            data = document.data()!;
-                            // print(document.toString());
-                            // print(data['message']);
-                            return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: displayMessWidget(data: data, friendUid: widget.friendUid));
-                          },
-                        ).toList(),
-                      ),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      reverse: true,
+                      children: snapshot.data!.docs.map(
+                            (DocumentSnapshot document) {
+                          data = document.data()!;
+                          // print(document.toString());
+                          // print(data['message']);
+                          return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: displayMessWidget(data: data, friendUid: widget.friendUid));
+                        },
+                      ).toList(),
                     ),
-                    SendMessageWidget(
-                        chatDocId: widget.chatDocId, friendUid: widget.friendUid, friendName: widget.friendName)
-                  ],
-                ),
+                  ),
+                  SendMessageWidget(
+                      chatDocId: widget.chatDocId, friendUid: widget.friendUid, friendName: widget.friendName)
+                ],
               ),
             ),
           );
