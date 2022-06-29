@@ -14,14 +14,14 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String language = 'en';
-  var items = [
-    'en',
-    'vi',
-  ];
-
   @override
   Widget build(BuildContext context) {
+    String language = Localizations.localeOf(context).toString();
+    var items = [
+      'en',
+      'vi',
+    ];
+
     final user = FirebaseAuth.instance.currentUser!;
     return BlocListener<LocaleBloc, LocaleState>(
       listener: (context, state) {},
@@ -59,36 +59,67 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
                 ),
               ),
-              Card(child: ListTile(title: Text('ID: ${user.uid}'))),
-              Card(child: ListTile(title: Text('Gmail: ${user.email!}'))),
-              Container(
-                decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15)),
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: DropdownButton(
-                    value: language,
-                    icon: const Icon(Icons.arrow_drop_down),
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    isExpanded: true,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        language = newValue!;
-                        // widget.SetLocale(
-                        //     Locale.fromSubtags(languageCode: language));
-                        context.read<LocaleBloc>().add(SetLocaleEvent(
-                            Locale.fromSubtags(languageCode: language)));
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 7,
+                              offset: const Offset(0, 5))
+                        ]),
+                    child: ListTile(title: Text('ID: ${user.uid}'))),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 7,
+                              offset: const Offset(0, 5))
+                        ]),
+                    child: ListTile(title: Text('Gmail: ${user.email!}'))),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            blurRadius: 7,
+                            offset: const Offset(0, 5))
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: DropdownButton(
+                      value: language,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      items: items.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      isExpanded: true,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          language = newValue!;
 
-                        print(Localizations.localeOf(context).toString());
-                      });
-                    },
+                          context.read<LocaleBloc>().add(SetLocaleEvent(
+                              Locale.fromSubtags(languageCode: language)));
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),

@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_chat_app/bloc/send/send_bloc.dart';
+import 'package:demo_chat_app/model/messages.dart';
 import 'package:demo_chat_app/page/home/chat_detail/display_mess.dart';
 import 'package:demo_chat_app/page/home/chat_detail/send_mess.dart';
 import 'package:flutter/material.dart';
@@ -25,41 +26,39 @@ class _ChatDetailState extends State<ChatDetail> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: chats
-          .doc(widget.chatDocId)
-          .collection('messages')
-          .orderBy('createdOn', descending: true)
-          .snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return Center(child: Text('Something went wrong'));
-        }
+    return BlocProvider(
+      create: (context) => SendBloc(),
+      child: StreamBuilder<QuerySnapshot>(
+        stream: chats
+            .doc(widget.chatDocId)
+            .collection('messages')
+            .orderBy('createdOn', descending: true)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Something went wrong'));
+          }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-        if (snapshot.hasData) {
-          var data;
-          return Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading:
-                  MediaQuery.of(context).size.width < 600 ? true : false,
-              backgroundColor: Color(0xFF08C187),
-              title: Text(widget.friendName),
-              centerTitle: true,
-              actions: [IconButton(onPressed: () {}, icon: Icon(Icons.phone))],
-            ),
-            body: MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => SendBloc(),
-                ),
-              ],
-              child: SafeArea(
+          if (snapshot.hasData) {
+            var data;
+            return Scaffold(
+              appBar: AppBar(
+                automaticallyImplyLeading:
+                    MediaQuery.of(context).size.width < 600 ? true : false,
+                backgroundColor: Color(0xFF08C187),
+                title: Text(widget.friendName),
+                centerTitle: true,
+                actions: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.phone))
+                ],
+              ),
+              body: SafeArea(
                 child: Column(
                   children: [
                     Expanded(
@@ -67,14 +66,14 @@ class _ChatDetailState extends State<ChatDetail> {
                         reverse: true,
                         children: snapshot.data!.docs.map(
                           (DocumentSnapshot document) {
-                            data = document.data()!;
-                            // print(document.toString());
-                            // print(data['message']);
+                            Messages mes = Messages();
+                            mes = mes.map(document.data());
+
                             return Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: displayMessWidget(
-                                    data: data, friendUid: widget.friendUid));
+                                    mes: mes, friendUid: widget.friendUid));
                           },
                         ).toList(),
                       ),
@@ -86,12 +85,12 @@ class _ChatDetailState extends State<ChatDetail> {
                   ],
                 ),
               ),
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 }

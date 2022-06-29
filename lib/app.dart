@@ -18,12 +18,6 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     Locale? _locale;
 
-    void SetLocale(Locale locale) {
-      setState(() {
-        _locale = locale;
-      });
-    }
-
     return BlocBuilder<LocaleBloc, LocaleState>(
       builder: (context, state) {
         if (state is SetLocaleState) _locale = state.locale;
@@ -37,12 +31,11 @@ class _AppState extends State<App> {
             ),
           ],
           child: MaterialApp(
-            // locale: Locale.fromSubtags(languageCode: 'vi'),
             locale: _locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             debugShowCheckedModeBanner: false,
-            home: Intro(SetLocale),
+            home: const Intro(),
             theme: ThemeData(
                 brightness: Brightness.light,
                 primaryColor: const Color(0xFF08C187)),

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/model/users.dart';
-import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,11 +54,6 @@ class _PeopleState extends State<People> {
 
                             return Card(
                               child: ListTile(
-                                onTap: () async {
-                                  context.read<CheckBloc>().add(
-                                      SetChatDocIdEvent(users.uid, users.name));
-                                  widget.SetChat(users.uid, users.name);
-                                },
                                 leading: users.avatar != ''
                                     ? ClipOval(
                                         child: Image.network(
@@ -81,6 +75,13 @@ class _PeopleState extends State<People> {
                                 subtitle: Text(users.status),
                                 trailing: const Icon(
                                     Icons.arrow_forward_ios_outlined),
+                                onTap: () async {
+                                  
+                                  context.read<CheckBloc>().add(
+                                      SetChatDocIdEvent(users.uid, users.name));
+
+                                  widget.SetChat(users.uid, users.name);
+                                },
                               ),
                             );
                           },

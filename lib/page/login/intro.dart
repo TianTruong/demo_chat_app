@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Intro extends StatefulWidget {
-  const Intro(this.SetLocale, {Key? key}) : super(key: key);
-  final void Function(Locale locale) SetLocale;
+  const Intro({Key? key}) : super(key: key);
 
   @override
   State<Intro> createState() => _IntroState();
@@ -55,7 +54,7 @@ class _IntroState extends State<Intro> {
                     ],
                   ),
                   const TermAndConditions(),
-                  LetStart(SetLocale: widget.SetLocale)
+                  const LetStart()
                 ],
               ),
             ),
@@ -107,8 +106,7 @@ class TermAndConditions extends StatelessWidget {
 }
 
 class LetStart extends StatefulWidget {
-  const LetStart({required this.SetLocale, Key? key}) : super(key: key);
-  final void Function(Locale locale) SetLocale;
+  const LetStart({Key? key}) : super(key: key);
 
   @override
   State<LetStart> createState() => _LetStartState();
@@ -121,9 +119,7 @@ class _LetStartState extends State<LetStart> {
       onPressed: () {
         print(Localizations.localeOf(context).toString());
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => LoginGmail(widget.SetLocale)));
+            context, MaterialPageRoute(builder: (context) => LoginGmail()));
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

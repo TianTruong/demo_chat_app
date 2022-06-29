@@ -44,6 +44,15 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
   String? friendUid;
   String? friendName;
 
+  void SetChat(String _friendUid, String _friendName) {
+    setState(() {
+      friendUid = _friendUid;
+      friendName = _friendName;
+      print(friendUid);
+      print(friendName);
+    });
+  }
+
   void callChatDetailScreen(
       BuildContext context, String chatId, String name, String uid) {
     Navigator.push(
@@ -56,15 +65,6 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
         ),
       ),
     );
-  }
-
-  void SetChat(String _friendUid, String _friendName) {
-    setState(() {
-      friendUid = _friendUid;
-      friendName = _friendName;
-      print(friendUid);
-      print(friendName);
-    });
   }
 
   @override

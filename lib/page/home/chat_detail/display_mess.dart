@@ -8,9 +8,10 @@ import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 
 class displayMessWidget extends StatefulWidget {
-  final data;
+  final Messages mes;
   final String friendUid;
-  const displayMessWidget({Key? key, this.data, required this.friendUid})
+  const displayMessWidget(
+      {Key? key, required this.mes, required this.friendUid})
       : super(key: key);
 
   @override
@@ -21,11 +22,9 @@ class _displayMessWidgetState extends State<displayMessWidget> {
   AudioPlayer advancedPlayer = AudioPlayer();
   String path =
       'https://firebasestorage.googleapis.com/v0/b/chatapp-ef0a7.appspot.com/o/sample-6s.mp3?alt=media&token=6afbc658-2733-45f4-be07-53a212211ce1';
-  Messages mes = Messages();
 
   @override
   void initState() {
-    mes = mes.map(widget.data);
     super.initState();
   }
 
@@ -74,20 +73,19 @@ class _displayMessWidgetState extends State<displayMessWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Messages? mes;
-    // mes!.map(widget.data);
     return ChatBubble(
       clipper: ChatBubbleClipper6(
         nipSize: 5,
         radius: 15,
-        type: isSender(mes.uid.toString())
+        type: isSender(widget.mes.uid.toString())
             ? BubbleType.sendBubble
             : BubbleType.receiverBubble,
       ),
-      alignment: getAlignment(mes.uid.toString()),
+      alignment: getAlignment(widget.mes.uid.toString()),
       margin: EdgeInsets.only(top: 20),
-      backGroundColor:
-          isSender(mes.uid.toString()) ? Color(0xFF08C187) : Color(0xffE7E7ED),
+      backGroundColor: isSender(widget.mes.uid.toString())
+          ? Color(0xFF08C187)
+          : Color(0xffE7E7ED),
       child: Container(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -96,17 +94,17 @@ class _displayMessWidgetState extends State<displayMessWidget> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(5, 5, 5, 0),
-              child: mes.message != ''
-                  ? Text(mes.message,
+              child: widget.mes.message != ''
+                  ? Text(widget.mes.message,
                       style: TextStyle(
-                          color: isSender(mes.uid.toString())
+                          color: isSender(widget.mes.uid.toString())
                               ? Colors.white
                               : Colors.black),
                       maxLines: 100,
                       overflow: TextOverflow.ellipsis)
-                  : mes.image != ''
+                  : widget.mes.image != ''
                       ? Image.network(
-                          mes.image,
+                          widget.mes.image,
                           fit: BoxFit.cover,
                         )
                       : Container(
@@ -116,7 +114,7 @@ class _displayMessWidgetState extends State<displayMessWidget> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              buildButton(mes.voice),
+                              buildButton(widget.mes.voice),
                               IconButton(
                                 icon: Icon(Icons.replay),
                                 onPressed: () async {

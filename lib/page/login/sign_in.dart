@@ -12,8 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginGmail extends StatefulWidget {
-  const LoginGmail(this.SetLocale, {Key? key}) : super(key: key);
-  final void Function(Locale locale) SetLocale;
+  const LoginGmail({Key? key}) : super(key: key);
 
   @override
   State<LoginGmail> createState() => _LoginGmailState();
@@ -130,8 +129,7 @@ class _LoginGmailState extends State<LoginGmail> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                SignUp(widget.SetLocale)));
+                                            builder: (context) => SignUp()));
                                   })
                             ],
                           )
