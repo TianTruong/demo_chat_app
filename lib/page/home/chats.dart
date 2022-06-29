@@ -28,25 +28,26 @@ class _ChatsState extends State<Chats> {
     chatState.refreshChatsForCurrentUser();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-
     return BlocBuilder<CheckBloc, CheckState>(
-      builder:  (context, state) {
+      builder: (context, state) {
         return Scaffold(
           body: LayoutBuilder(
             builder: (context, constraints) {
               return Observer(
                   builder: (BuildContext context) => CustomScrollView(
-                    slivers: [
-                      CupertinoSliverNavigationBar(
-                        automaticallyImplyLeading: false,
-                        largeTitle: Text(AppLocalizations.of(context)!.chat),
-                      ),
-                      SliverList(
-                          delegate: SliverChildListDelegate(chatState.messages.values.toList().map((data) {
+                        slivers: [
+                          CupertinoSliverNavigationBar(
+                            automaticallyImplyLeading: false,
+                            largeTitle:
+                                Text(AppLocalizations.of(context)!.chat),
+                          ),
+                          SliverList(
+                              delegate: SliverChildListDelegate(chatState
+                                  .messages.values
+                                  .toList()
+                                  .map((data) {
                             FirstMessage firstMessage = FirstMessage();
                             firstMessage = firstMessage.map(data);
 
@@ -54,24 +55,31 @@ class _ChatsState extends State<Chats> {
                               child: ListTile(
                                   title: Text(firstMessage.friendName),
                                   subtitle: Text(firstMessage.message),
-                                  trailing: const Icon(Icons.arrow_forward_ios_outlined),
-                                  onTap: () => firstMessage.friendUid != currentUserId
-                                      ? {
-                                    context
-                                        .read<CheckBloc>()
-                                        .add(SetChatDocIdEvent(firstMessage.friendUid, firstMessage.friendName)),
-                                    widget.SetChat(firstMessage.friendUid, firstMessage.friendName)
-                                  }
-                                      : {
-                                    context
-                                        .read<CheckBloc>()
-                                        .add(SetChatDocIdEvent(firstMessage.uid, firstMessage.friendName)),
-                                    widget.SetChat(firstMessage.uid, firstMessage.friendName)
-                                  }),
+                                  trailing: const Icon(
+                                      Icons.arrow_forward_ios_outlined),
+                                  onTap: () =>
+                                      firstMessage.friendUid != currentUserId
+                                          ? {
+                                              context.read<CheckBloc>().add(
+                                                  SetChatDocIdEvent(
+                                                      firstMessage.friendUid,
+                                                      firstMessage.friendName)),
+                                              widget.SetChat(
+                                                  firstMessage.friendUid,
+                                                  firstMessage.friendName)
+                                            }
+                                          : {
+                                              context.read<CheckBloc>().add(
+                                                  SetChatDocIdEvent(
+                                                      firstMessage.uid,
+                                                      firstMessage.friendName)),
+                                              widget.SetChat(firstMessage.uid,
+                                                  firstMessage.friendName)
+                                            }),
                             );
                           }).toList()))
-                    ],
-                  ));
+                        ],
+                      ));
             },
           ),
         );

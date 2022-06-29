@@ -109,7 +109,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                              content: Text('${AppLocalizations.of(context)!.signout}?'),
+                              content: Text(
+                                  '${AppLocalizations.of(context)!.signout}?'),
                               actions: [
                                 FlatButton(
                                     child:

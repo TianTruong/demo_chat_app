@@ -23,9 +23,9 @@ class _HomePageState extends State<HomePage> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < 600) {
-            return HomeViewSmall();
+            return const HomeViewSmall();
           } else {
-            return HomeViewLarge();
+            return const HomeViewLarge();
           }
         },
       ),
@@ -44,7 +44,8 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
   String? friendUid;
   String? friendName;
 
-  void callChatDetailScreen(BuildContext context, String chatId, String name, String uid) {
+  void callChatDetailScreen(
+      BuildContext context, String chatId, String name, String uid) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -52,7 +53,9 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
           chatDocId: chatId,
           friendName: name,
           friendUid: uid,
-        ),),);
+        ),
+      ),
+    );
   }
 
   void SetChat(String _friendUid, String _friendName) {
@@ -66,16 +69,13 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
 
   @override
   Widget build(BuildContext context) {
-    var screens = [
-      Chats(SetChat),
-      People(SetChat),
-      SettingsScreen()
-    ];
+    var screens = [Chats(SetChat), People(SetChat), const SettingsScreen()];
     return BlocListener<CheckBloc, CheckState>(
       listener: (context, state) {
-        if(state is SetChatDocIdState) {
-          if(MediaQuery.of(context).size.width < 600) {
-            callChatDetailScreen(context, state.ChatDocID, state.friendName,state.friendUid);
+        if (state is SetChatDocIdState) {
+          if (MediaQuery.of(context).size.width < 600) {
+            callChatDetailScreen(
+                context, state.ChatDocID, state.friendName, state.friendUid);
           }
         }
       },
@@ -93,8 +93,8 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
                     color: Color(0xFF08C187)),
               ),
               BottomNavigationBarItem(
-                icon:
-                    Icon(CupertinoIcons.settings_solid, color: Color(0xFF08C187)),
+                icon: Icon(CupertinoIcons.settings_solid,
+                    color: Color(0xFF08C187)),
               )
             ],
           ),
@@ -128,11 +128,7 @@ class _HomeViewLargeState extends State<HomeViewLarge> {
 
   @override
   Widget build(BuildContext context) {
-    var screens = [
-      Chats(SetChat),
-      People(SetChat),
-      SettingsScreen()
-    ];
+    var screens = [Chats(SetChat), People(SetChat), const SettingsScreen()];
 
     return Scaffold(
       body: Row(

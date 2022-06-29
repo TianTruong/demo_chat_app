@@ -23,13 +23,17 @@ class _PeopleState extends State<People> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('users').where('uid', isNotEqualTo: currentUser).snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .where('uid', isNotEqualTo: currentUser)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
-                return const Text('Something went wrong.');
+                return const Center(child: Text('Something went wrong.'));
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Text('Loading');
+                return const Center(child: CircularProgressIndicator());
               }
 
               if (snapshot.hasData) {
@@ -52,7 +56,8 @@ class _PeopleState extends State<People> {
                             return Card(
                               child: ListTile(
                                 onTap: () async {
-                                  context.read<CheckBloc>().add(SetChatDocIdEvent(users.uid, users.name));
+                                  context.read<CheckBloc>().add(
+                                      SetChatDocIdEvent(users.uid, users.name));
                                   widget.SetChat(users.uid, users.name);
                                 },
                                 leading: users.avatar != ''
@@ -74,7 +79,8 @@ class _PeopleState extends State<People> {
                                       ),
                                 title: Text(users.name),
                                 subtitle: Text(users.status),
-                                trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                                trailing: const Icon(
+                                    Icons.arrow_forward_ios_outlined),
                               ),
                             );
                           },
