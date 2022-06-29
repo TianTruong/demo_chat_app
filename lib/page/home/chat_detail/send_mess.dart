@@ -49,6 +49,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
 
     return BlocBuilder<SendBloc, SendState>(
       builder: (context, state) {
+        debugPrint('------------------------$state----------------------');
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(

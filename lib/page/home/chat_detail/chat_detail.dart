@@ -25,72 +25,78 @@ class _ChatDetailState extends State<ChatDetail> {
   var _textController = TextEditingController();
 
   @override
+  void initState(){
+    debugPrint('------------------------Start----------------------');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SendBloc(),
-      child: StreamBuilder<QuerySnapshot>(
-        stream: chats
-            .doc(widget.chatDocId)
-            .collection('messages')
-            .orderBy('createdOn', descending: true)
-            .snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Something went wrong'));
-          }
+    debugPrint('------------------------Check----------------------');
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
 
-          if (snapshot.hasData) {
-            var data;
-            return Scaffold(
-              appBar: AppBar(
-                automaticallyImplyLeading:
-                    MediaQuery.of(context).size.width < 600 ? true : false,
-                backgroundColor: Color(0xFF08C187),
-                title: Text(widget.friendName),
-                centerTitle: true,
-                actions: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.phone))
+    return StreamBuilder<QuerySnapshot>(
+      stream: chats
+          .doc(widget.chatDocId)
+          .collection('messages')
+          .orderBy('createdOn', descending: true)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text('Something went wrong'));
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading:
+                  MediaQuery.of(context).size.width < 600 ? true : false,
+              backgroundColor: Color(0xFF08C187),
+              title: Text(widget.friendName),
+              centerTitle: true,
+              actions: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.phone))
+              ],
+            ),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView(
+                      reverse: true,
+                      children: snapshot.data!.docs.map(
+                        (DocumentSnapshot document) {
+
+                          Messages mes = Messages();
+                          mes = mes.map(document.data());
+
+                          return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: displayMessWidget(
+                                  mes: mes, friendUid: widget.friendUid));
+                        },
+                      ).toList(),
+                    ),
+                  ),
+                  SendMessageWidget(
+                      chatDocId: widget.chatDocId,
+                      friendUid: widget.friendUid,
+                      friendName: widget.friendName)
                 ],
               ),
-              body: SafeArea(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: ListView(
-                        reverse: true,
-                        children: snapshot.data!.docs.map(
-                          (DocumentSnapshot document) {
-                            Messages mes = Messages();
-                            mes = mes.map(document.data());
-
-                            return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: displayMessWidget(
-                                    mes: mes, friendUid: widget.friendUid));
-                          },
-                        ).toList(),
-                      ),
-                    ),
-                    SendMessageWidget(
-                        chatDocId: widget.chatDocId,
-                        friendUid: widget.friendUid,
-                        friendName: widget.friendName)
-                  ],
-                ),
-              ),
-            );
-          } else {
-            return Container();
-          }
-        },
-      ),
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
     );
   }
 }
