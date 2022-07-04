@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class People extends StatefulWidget {
-  const People( {Key? key}) : super(key: key);
+  const People({Key? key}) : super(key: key);
 
   @override
   State<People> createState() => _PeopleState();
@@ -54,7 +54,8 @@ class _PeopleState extends State<People> {
                             return Card(
                               child: ListTile(
                                 onTap: () async {
-                                  context.read<CheckBloc>().add(SetChatDocIdEvent(users.uid, users.name));
+                                  context.read<CheckBloc>().add(
+                                      SetChatDocIdEvent(users.uid, users.name));
                                 },
                                 leading: users.avatar != ''
                                     ? ClipOval(

@@ -79,39 +79,5 @@ class _ChatsState extends State<Chats> {
         );
       },
     );
-    Size screenSize = MediaQuery.of(context).size;
-
-    return Observer(
-        builder: (BuildContext context) => CustomScrollView(
-              slivers: [
-                CupertinoSliverNavigationBar(
-                  automaticallyImplyLeading: false,
-                  largeTitle: Text(AppLocalizations.of(context)!.chat),
-                ),
-                SliverList(
-                    delegate: SliverChildListDelegate(
-                        chatState.messages.values.toList().map((data) {
-                  FirstMessage firstMessage = FirstMessage();
-                  firstMessage = firstMessage.map(data);
-
-                  return Card(
-                    child: ListTile(
-                        title: Text(firstMessage.friendName),
-                        subtitle: Text(firstMessage.message),
-                        trailing: const Icon(Icons.arrow_forward_ios_outlined),
-                        onTap: () => firstMessage.friendUid != currentUserId
-                            ? {
-                                context.read<CheckBloc>().add(SetChatDocIdEvent(
-                                    firstMessage.friendUid,
-                                    firstMessage.friendName)),
-                              }
-                            : {
-                                context.read<CheckBloc>().add(SetChatDocIdEvent(
-                                    firstMessage.uid, firstMessage.friendName)),
-                              }),
-                  );
-                }).toList()))
-              ],
-            ));
   }
 }

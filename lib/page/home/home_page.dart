@@ -77,23 +77,25 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
         resizeToAvoidBottomInset: false,
         key: _profileScaffoldKey,
         body: Center(
-          child: screens.elementAt(_selectedIndex), //New
+          child: screens.elementAt(_selectedIndex),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex, //New
+          selectedItemColor: const Color(0xFF08C187),
+          unselectedItemColor: Colors.grey,
+          currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.chat_bubble_2_fill,
-                  color: Color(0xFF08C187)),
+              icon: Icon(CupertinoIcons.chat_bubble_2, size: 30),
+              label: 'Chats',
             ),
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.person_alt_circle,
-                  color: Color(0xFF08C187)),
+              icon: Icon(CupertinoIcons.person_alt_circle, size: 30),
+              label: 'People',
             ),
             BottomNavigationBarItem(
-              icon:
-                  Icon(CupertinoIcons.settings_solid, color: Color(0xFF08C187)),
+              icon: Icon(CupertinoIcons.settings_solid, size: 30),
+              label: 'Settings',
             )
           ],
         ),
@@ -129,23 +131,25 @@ class _HomeViewLargeState extends State<HomeViewLarge> {
             resizeToAvoidBottomInset: false,
             key: _profileScaffoldKey,
             body: Center(
-              child: screens.elementAt(_selectedIndex), //New
+              child: screens.elementAt(_selectedIndex),
             ),
             bottomNavigationBar: BottomNavigationBar(
-              currentIndex: _selectedIndex, //New
+              selectedItemColor: const Color(0xFF08C187),
+              unselectedItemColor: Colors.grey,
+              currentIndex: _selectedIndex,
               onTap: _onItemTapped,
               items: const [
                 BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.chat_bubble_2_fill,
-                      color: Color(0xFF08C187)),
+                  icon: Icon(CupertinoIcons.chat_bubble_2, size: 30),
+                  label: 'Chats',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.person_alt_circle,
-                      color: Color(0xFF08C187)),
+                  icon: Icon(CupertinoIcons.person_alt_circle, size: 30),
+                  label: 'People',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.settings_solid,
-                      color: Color(0xFF08C187)),
+                  icon: Icon(CupertinoIcons.settings_solid, size: 30),
+                  label: 'Settings',
                 )
               ],
             ),
