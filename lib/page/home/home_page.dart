@@ -19,16 +19,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          if (constraints.maxWidth < 600) {
-            return const HomeViewSmall();
-          } else {
-            return const HomeViewLarge();
-          }
-        },
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 600) {
+          return const HomeViewSmall();
+        } else {
+          return const HomeViewLarge();
+        }
+      },
     );
   }
 }
@@ -41,18 +39,9 @@ class HomeViewSmall extends StatefulWidget {
 }
 
 class _HomeViewSmallState extends State<HomeViewSmall> {
-  String? friendUid;
-  String? friendName;
-
-  void SetChat(String _friendUid, String _friendName) {
-    setState(() {
-      friendUid = _friendUid;
-      friendName = _friendName;
-      print(friendUid);
-      print(friendName);
-    });
-  }
-
+  var screens = [const Chats(), const People(), const SettingsScreen()];
+  int _selectedIndex = 0;
+  GlobalKey<ScaffoldState> _profileScaffoldKey = GlobalKey<ScaffoldState>();
   void callChatDetailScreen(
       BuildContext context, String chatId, String name, String uid) {
     Navigator.push(
@@ -67,9 +56,14 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
     );
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var screens = [Chats(SetChat), People(SetChat), const SettingsScreen()];
     return BlocListener<CheckBloc, CheckState>(
       listener: (context, state) {
         if (state is SetChatDocIdState) {
@@ -80,27 +74,28 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
         }
       },
       child: Scaffold(
-        bottomNavigationBar: CupertinoTabScaffold(
-          resizeToAvoidBottomInset: true,
-          tabBar: CupertinoTabBar(
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.chat_bubble_2_fill,
-                    color: Color(0xFF08C187)),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person_alt_circle,
-                    color: Color(0xFF08C187)),
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.settings_solid,
-                    color: Color(0xFF08C187)),
-              )
-            ],
-          ),
-          tabBuilder: (BuildContext context, int index) {
-            return screens[index];
-          },
+        resizeToAvoidBottomInset: false,
+        key: _profileScaffoldKey,
+        body: Center(
+          child: screens.elementAt(_selectedIndex), //New
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex, //New
+          onTap: _onItemTapped,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.chat_bubble_2_fill,
+                  color: Color(0xFF08C187)),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.person_alt_circle,
+                  color: Color(0xFF08C187)),
+            ),
+            BottomNavigationBarItem(
+              icon:
+                  Icon(CupertinoIcons.settings_solid, color: Color(0xFF08C187)),
+            )
+          ],
         ),
       ),
     );
@@ -114,80 +109,80 @@ class HomeViewLarge extends StatefulWidget {
 }
 
 class _HomeViewLargeState extends State<HomeViewLarge> {
-  String? friendUid;
-  String? friendName;
+  int _selectedIndex = 0;
+  GlobalKey<ScaffoldState> _profileScaffoldKey = GlobalKey<ScaffoldState>();
+  var screens = [const Chats(), const People(), const SettingsScreen()];
 
-  void SetChat(String _friendUid, String _friendName) {
+  void _onItemTapped(int index) {
     setState(() {
-      friendUid = _friendUid;
-      friendName = _friendName;
-      print(friendUid);
-      print(friendName);
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var screens = [Chats(SetChat), People(SetChat), const SettingsScreen()];
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            key: _profileScaffoldKey,
+            body: Center(
+              child: screens.elementAt(_selectedIndex), //New
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _selectedIndex, //New
+              onTap: _onItemTapped,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.chat_bubble_2_fill,
+                      color: Color(0xFF08C187)),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.person_alt_circle,
+                      color: Color(0xFF08C187)),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(CupertinoIcons.settings_solid,
+                      color: Color(0xFF08C187)),
+                )
+              ],
+            ),
+          ),
+        ),
+        const Expanded(
+          flex: 3,
+          child: RightLargeWidget(),
+        ),
+      ],
+    );
+  }
+}
 
-    return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: LayoutBuilder(
-                builder: (context, constraints) => Scaffold(
-                      bottomNavigationBar: CupertinoTabScaffold(
-                        resizeToAvoidBottomInset: true,
-                        tabBar: CupertinoTabBar(
-                          items: const [
-                            BottomNavigationBarItem(
-                              icon: Icon(CupertinoIcons.chat_bubble_2_fill,
-                                  color: Color(0xFF08C187)),
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Icon(CupertinoIcons.person_alt_circle,
-                                  color: Color(0xFF08C187)),
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Icon(CupertinoIcons.settings_solid,
-                                  color: Color(0xFF08C187)),
-                            )
-                          ],
-                        ),
-                        tabBuilder: (BuildContext context, int index) {
-                          return screens[index];
-                        },
-                      ),
-                    )),
+class RightLargeWidget extends StatelessWidget {
+  const RightLargeWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CheckBloc, CheckState>(
+      builder: (context, state) {
+        debugPrint("---BlocBuilder<CheckBloc>----");
+        if (state is SetChatDocIdState) {
+          return ChatDetail(
+            chatDocId: state.ChatDocID,
+            friendUid: state.friendUid,
+            friendName: state.friendName,
+          );
+        }
+        return Container(
+          color: Colors.white,
+          child: Center(
+            child: Image.asset('images/whatsapp.png',
+                color: Colors.grey.withOpacity(0.2)),
           ),
-          Expanded(
-            flex: 3,
-            child: LayoutBuilder(
-                builder: (context, constraints) =>
-                    (friendUid == null || friendName == null)
-                        ? Container(
-                            color: Colors.white,
-                            child: Center(
-                              child: Image.asset('images/whatsapp.png',
-                                  color: Colors.grey.withOpacity(0.2)),
-                            ),
-                          )
-                        : BlocBuilder<CheckBloc, CheckState>(
-                            builder: (context, state) {
-                              if (state is SetChatDocIdState) {
-                                return ChatDetail(
-                                  chatDocId: state.ChatDocID,
-                                  friendUid: friendUid,
-                                  friendName: friendName,
-                                );
-                              }
-                              return Container();
-                            },
-                          )),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

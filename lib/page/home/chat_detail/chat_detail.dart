@@ -25,7 +25,7 @@ class _ChatDetailState extends State<ChatDetail> {
   var _textController = TextEditingController();
 
   @override
-  void initState(){
+  void initState() {
     debugPrint('------------------------Start----------------------');
     super.initState();
   }
@@ -33,7 +33,6 @@ class _ChatDetailState extends State<ChatDetail> {
   @override
   Widget build(BuildContext context) {
     debugPrint('------------------------Check----------------------');
-
 
     return StreamBuilder<QuerySnapshot>(
       stream: chats
@@ -47,8 +46,8 @@ class _ChatDetailState extends State<ChatDetail> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+          return Center(
+            child: CircularProgressIndicator(),
           );
         }
 
@@ -60,9 +59,7 @@ class _ChatDetailState extends State<ChatDetail> {
               backgroundColor: Color(0xFF08C187),
               title: Text(widget.friendName),
               centerTitle: true,
-              actions: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.phone))
-              ],
+              actions: [IconButton(onPressed: () {}, icon: Icon(Icons.phone))],
             ),
             body: SafeArea(
               child: Column(
@@ -70,19 +67,17 @@ class _ChatDetailState extends State<ChatDetail> {
                   Expanded(
                     child: ListView(
                       reverse: true,
-                      children: snapshot.data!.docs.map(
-                        (DocumentSnapshot document) {
+                      children:
+                          snapshot.data!.docs.map((DocumentSnapshot document) {
+                        Messages mes = Messages();
+                        mes = mes.map(document.data());
 
-                          Messages mes = Messages();
-                          mes = mes.map(document.data());
-
-                          return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
-                              child: displayMessWidget(
-                                  mes: mes, friendUid: widget.friendUid));
-                        },
-                      ).toList(),
+                        return Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: displayMessWidget(
+                                mes: mes, friendUid: widget.friendUid));
+                      }).toList(),
                     ),
                   ),
                   SendMessageWidget(

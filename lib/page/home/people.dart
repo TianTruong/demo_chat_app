@@ -8,8 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class People extends StatefulWidget {
-  const People(this.SetChat, {Key? key}) : super(key: key);
-  final void Function(String friendUid, String friendName) SetChat;
+  const People( {Key? key}) : super(key: key);
 
   @override
   State<People> createState() => _PeopleState();
@@ -54,6 +53,9 @@ class _PeopleState extends State<People> {
 
                             return Card(
                               child: ListTile(
+                                onTap: () async {
+                                  context.read<CheckBloc>().add(SetChatDocIdEvent(users.uid, users.name));
+                                },
                                 leading: users.avatar != ''
                                     ? ClipOval(
                                         child: Image.network(
@@ -75,13 +77,6 @@ class _PeopleState extends State<People> {
                                 subtitle: Text(users.status),
                                 trailing: const Icon(
                                     Icons.arrow_forward_ios_outlined),
-                                onTap: () async {
-                                  
-                                  context.read<CheckBloc>().add(
-                                      SetChatDocIdEvent(users.uid, users.name));
-
-                                  widget.SetChat(users.uid, users.name);
-                                },
                               ),
                             );
                           },

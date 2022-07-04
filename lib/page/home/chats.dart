@@ -10,8 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 class Chats extends StatefulWidget {
-  const Chats(this.SetChat, {Key? key}) : super(key: key);
-  final void Function(String friendUid, String friendName) SetChat;
+  const Chats({Key? key}) : super(key: key);
 
   @override
   State<Chats> createState() => _ChatsState();
@@ -64,17 +63,12 @@ class _ChatsState extends State<Chats> {
                                                   SetChatDocIdEvent(
                                                       firstMessage.friendUid,
                                                       firstMessage.friendName)),
-                                              widget.SetChat(
-                                                  firstMessage.friendUid,
-                                                  firstMessage.friendName)
                                             }
                                           : {
                                               context.read<CheckBloc>().add(
                                                   SetChatDocIdEvent(
                                                       firstMessage.uid,
                                                       firstMessage.friendName)),
-                                              widget.SetChat(firstMessage.uid,
-                                                  firstMessage.friendName)
                                             }),
                             );
                           }).toList()))
@@ -85,5 +79,39 @@ class _ChatsState extends State<Chats> {
         );
       },
     );
+    Size screenSize = MediaQuery.of(context).size;
+
+    return Observer(
+        builder: (BuildContext context) => CustomScrollView(
+              slivers: [
+                CupertinoSliverNavigationBar(
+                  automaticallyImplyLeading: false,
+                  largeTitle: Text(AppLocalizations.of(context)!.chat),
+                ),
+                SliverList(
+                    delegate: SliverChildListDelegate(
+                        chatState.messages.values.toList().map((data) {
+                  FirstMessage firstMessage = FirstMessage();
+                  firstMessage = firstMessage.map(data);
+
+                  return Card(
+                    child: ListTile(
+                        title: Text(firstMessage.friendName),
+                        subtitle: Text(firstMessage.message),
+                        trailing: const Icon(Icons.arrow_forward_ios_outlined),
+                        onTap: () => firstMessage.friendUid != currentUserId
+                            ? {
+                                context.read<CheckBloc>().add(SetChatDocIdEvent(
+                                    firstMessage.friendUid,
+                                    firstMessage.friendName)),
+                              }
+                            : {
+                                context.read<CheckBloc>().add(SetChatDocIdEvent(
+                                    firstMessage.uid, firstMessage.friendName)),
+                              }),
+                  );
+                }).toList()))
+              ],
+            ));
   }
 }
