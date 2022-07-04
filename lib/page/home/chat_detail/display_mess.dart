@@ -46,8 +46,8 @@ class _displayMessWidgetState extends State<displayMessWidget> {
             color: Colors.black,
             icon: Icon(Icons.play_arrow),
             onPressed: () async {
-              // await advancedPlayer.play(data);
-              await advancedPlayer.play(path);
+              await advancedPlayer.play(data);
+              // await advancedPlayer.play(path);
               setState(() {});
             },
           )
