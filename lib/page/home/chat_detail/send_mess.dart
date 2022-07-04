@@ -152,7 +152,7 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                       borderSide:
                           const BorderSide(color: Color(0xFF08C187), width: 3),
                     ),
-                    hintText: 'Nhập tin nhắn ...',
+                    hintText: AppLocalizations.of(context)!.enter_a_message,
                     // labelText: 'Name'
                   ),
                 ),

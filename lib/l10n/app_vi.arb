@@ -16,11 +16,12 @@
     "signup": "Đăng ký",
     "chat": "Trò chuyện",
     "people": "Danh bạ",
-    "setting": "Cài Đặt",
+    "setting": "Cài đặt",
     "yes": "Có",
     "no": "Không",
     "conti": "Tiếp tục",
     "exit": "Thoát",
     "camera": "Máy ảnh",
-    "gallery": "Thư viện"
+    "gallery": "Thư viện",
+    "enter_a_message": "Nhập tin nhắn ..."
 }

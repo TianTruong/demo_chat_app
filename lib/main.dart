@@ -35,23 +35,8 @@ Future<void> main() async {
     }
   });
 
-  runApp(
-      //   BlocProvider(
-      //   create: (context) => LocaleBloc(),
-      //   child: App(),
-      // )
-      MultiBlocProvider(providers: [
-    BlocProvider<LoginBloc>(
-      create: (context) => LoginBloc(),
-    ),
-    BlocProvider<CheckBloc>(
-      create: (context) => CheckBloc(),
-    ),
-    BlocProvider<SendBloc>(
-      create: (context) => SendBloc(),
-    ),
-    BlocProvider<LocaleBloc>(
-      create: (context) => LocaleBloc(),
-    ),
-  ], child: App()));
+  runApp(BlocProvider(
+    create: (context) => LocaleBloc(),
+    child: App(),
+  ));
 }

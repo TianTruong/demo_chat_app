@@ -22,5 +22,6 @@
     "conti": "Continue",
     "exit": "Exit",
     "camera": "Camera",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "enter_a_message": "Enter a message ..."
 }

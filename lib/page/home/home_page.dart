@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, non_constant_identifier_names, avoid_print
+// ignore_for_file: must_be_immutable, non_constant_identifier_names, avoid_print, prefer_const_constructors
 
 import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
@@ -8,6 +8,7 @@ import 'package:demo_chat_app/page/home/settings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -84,18 +85,18 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
           unselectedItemColor: Colors.grey,
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
-          items: const [
+          items: [
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.chat_bubble_2, size: 30),
-              label: 'Chats',
+              label: AppLocalizations.of(context)!.chat,
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.person_alt_circle, size: 30),
-              label: 'People',
+              label: AppLocalizations.of(context)!.people,
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.settings_solid, size: 30),
-              label: 'Settings',
+              label: AppLocalizations.of(context)!.setting,
             )
           ],
         ),
@@ -138,18 +139,18 @@ class _HomeViewLargeState extends State<HomeViewLarge> {
               unselectedItemColor: Colors.grey,
               currentIndex: _selectedIndex,
               onTap: _onItemTapped,
-              items: const [
+              items: [
                 BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.chat_bubble_2, size: 30),
-                  label: 'Chats',
+                  label: AppLocalizations.of(context)!.chat,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.person_alt_circle, size: 30),
-                  label: 'People',
+                  label: AppLocalizations.of(context)!.people,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(CupertinoIcons.settings_solid, size: 30),
-                  label: 'Settings',
+                  label: AppLocalizations.of(context)!.setting,
                 )
               ],
             ),
