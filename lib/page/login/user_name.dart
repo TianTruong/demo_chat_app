@@ -28,8 +28,7 @@ class _UserNameState extends State<UserName> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-          create: (context) => LoginBloc(),
-          child: WireFrameUserName()),
+          create: (context) => LoginBloc(), child: WireFrameUserName()),
     );
   }
 }
@@ -124,10 +123,10 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                   );
           }),
         )),
-        const Padding(
+        Padding(
           padding: EdgeInsets.all(5.0),
           child: Text(
-            "Enter your name",
+            AppLocalizations.of(context)!.enter_your_name,
             style: TextStyle(fontSize: 25),
           ),
         ),
@@ -145,7 +144,7 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                       borderRadius: BorderRadius.circular(15),
                       borderSide:
                           const BorderSide(color: Color(0xFF08C187), width: 3)),
-                  hintText: 'Your name ...'),
+                  hintText: AppLocalizations.of(context)!.your_name),
               keyboardType: TextInputType.text,
               onEditingComplete: () {
                 setState(() {});
@@ -178,9 +177,7 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                   .add(CreateUserEvent(_nameController.text, avatar, user.uid));
 
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => HomePage()));
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
             }),
         ElevatedButton(
             style: ElevatedButton.styleFrom(

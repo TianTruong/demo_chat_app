@@ -28,10 +28,12 @@ class _SignUpState extends State<SignUp> {
     super.dispose();
   }
 
-  buildTextFormField(TextEditingController controller, String hintText) {
+  buildTextFormField(
+      TextEditingController controller, bool hide, String hintText) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: TextFormField(
+        obscureText: hide,
         controller: controller,
         decoration: InputDecoration(
             border: OutlineInputBorder(
@@ -91,9 +93,12 @@ class _SignUpState extends State<SignUp> {
                         fit: BoxFit.fitWidth,
                       ),
                     ),
-                    buildTextFormField(_gmailController, 'Gmail'),
-                    buildTextFormField(_passController, 'Password'),
-                    buildTextFormField(_confirmController, 'Confirm Password'),
+                    buildTextFormField(_gmailController, false,
+                        AppLocalizations.of(context)!.gmail),
+                    buildTextFormField(_passController, true,
+                        AppLocalizations.of(context)!.password),
+                    buildTextFormField(_confirmController, true,
+                        AppLocalizations.of(context)!.confirm_password),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: const Color(0xFF08C187),
@@ -112,7 +117,7 @@ class _SignUpState extends State<SignUp> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('Have an account? '),
+                        Text(AppLocalizations.of(context)!.have_an_account),
                         CupertinoButton(
                             child: Text(AppLocalizations.of(context)!.signin,
                                 style: TextStyle(color: Colors.white)),
@@ -139,7 +144,8 @@ class _SignUpState extends State<SignUp> {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-                content: Text('Please enter some text'),
+                content: Text(
+                    AppLocalizations.of(context)!.please_enter_enough_info),
                 actions: [
                   FlatButton(
                       child: const Text('OK'),
