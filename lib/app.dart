@@ -40,7 +40,7 @@ class _AppState extends State<App> {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             debugShowCheckedModeBanner: false,
-            home: Intro(),
+            home: const Intro(),
             theme: ThemeData(
                 brightness: Brightness.light,
                 primaryColor: const Color(0xFF08C187)),

@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 
 part 'locale_event.dart';
 part 'locale_state.dart';

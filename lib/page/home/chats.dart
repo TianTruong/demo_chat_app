@@ -1,6 +1,5 @@
 import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/model/firstmessage.dart';
-import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
 import 'package:demo_chat_app/state/chat_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, unnecessary_string_interpolations, deprecated_member_use, curly_braces_in_flow_control_structures
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, unnecessary_string_interpolations, deprecated_member_use, curly_braces_in_flow_control_structures, prefer_final_fields, prefer_typing_uninitialized_variables, avoid_print
 
 import 'dart:io';
 
@@ -80,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onTap: () {
                               showModalBottomSheet(
                                   context: context,
-                                  builder: (context) => Container(
+                                  builder: (context) => SizedBox(
                                         height: 150,
                                         child: Column(
                                           children: [
@@ -262,7 +262,7 @@ class _ChangePassState extends State<ChangePass> {
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
+          child: SizedBox(
             height: 325,
             width: 350,
             child: Column(

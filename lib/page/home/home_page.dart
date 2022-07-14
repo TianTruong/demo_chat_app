@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, non_constant_identifier_names, avoid_print, prefer_const_constructors
+// ignore_for_file: must_be_immutable, non_constant_identifier_names, avoid_print, prefer_const_constructors, prefer_final_fields
 
 import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/page/home/chat_detail/chat_detail.dart';
