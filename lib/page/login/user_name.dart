@@ -12,7 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserName extends StatefulWidget {
-  const UserName({Key? key}) : super(key: key);
+  const UserName({Key? key, required this.pass}) : super(key: key);
+  final String pass;
 
   @override
   State<UserName> createState() => _UserNameState();
@@ -28,13 +29,15 @@ class _UserNameState extends State<UserName> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-          create: (context) => LoginBloc(), child: WireFrameUserName()),
+          create: (context) => LoginBloc(),
+          child: WireFrameUserName(pass: widget.pass)),
     );
   }
 }
 
 class WireFrameUserName extends StatefulWidget {
-  const WireFrameUserName({Key? key}) : super(key: key);
+  const WireFrameUserName({Key? key, required this.pass}) : super(key: key);
+  final String pass;
 
   @override
   State<WireFrameUserName> createState() => _WireFrameUserNameState();
@@ -87,9 +90,6 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                             onTap: () async {
                               Navigator.of(context).pop();
                               _saveImage(ImageSource.camera);
-                              // loginBloc.add(SaveImageEvent(ImageSource.camera));
-
-                              // setState(() {});
                             },
                           ),
                           ListTile(
@@ -98,9 +98,6 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                             onTap: () async {
                               Navigator.of(context).pop();
                               _saveImage(ImageSource.gallery);
-
-                              // loginBloc.add(SaveImageEvent(ImageSource.gallery));
-                              // setState(() {});
                             },
                           )
                         ],
@@ -173,8 +170,8 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
               user.updateDisplayName(_nameController.text);
               user.updatePhotoURL(avatar);
 
-              loginBloc
-                  .add(CreateUserEvent(_nameController.text, avatar, user.uid));
+              loginBloc.add(CreateUserEvent(
+                  _nameController.text, avatar, user.uid, widget.pass));
 
               Navigator.push(
                   context, MaterialPageRoute(builder: (context) => HomePage()));

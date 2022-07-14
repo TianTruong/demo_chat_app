@@ -7,8 +7,9 @@ class CreateUserEvent extends LoginEvent {
   final String name;
   final String avatar;
   final String uid;
+  final String pass;
 
-  CreateUserEvent(this.name, this.avatar, this.uid);
+  CreateUserEvent(this.name, this.avatar, this.uid, this.pass);
 }
 
 class SaveImageEvent extends LoginEvent {

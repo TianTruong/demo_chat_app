@@ -33,7 +33,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             'name': event.name,
             'avatar': event.avatar,
             'status': 'Available',
-            'uid': event.uid
+            'uid': event.uid,
+            'password': event.pass
           });
         }
       },

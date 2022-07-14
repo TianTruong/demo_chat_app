@@ -77,7 +77,7 @@ class _LoginGmailState extends State<LoginGmail> {
 
                 if (snapshot.hasData) {
                   if (FirebaseAuth.instance.currentUser!.displayName == null) {
-                    return UserName();
+                    return UserName(pass: _passController.text);
                   }
                   return HomePage();
                 }
