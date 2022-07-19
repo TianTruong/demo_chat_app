@@ -1,56 +1,49 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print
-
 import 'dart:io';
 
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:meta/meta.dart';
-import 'package:record/record.dart';
 
-part 'send_event.dart';
-part 'send_state.dart';
-
-class SendBloc extends Bloc<SendEvent, SendState> {
-  SendBloc() : super(SendState()) {
-    on<SendMessEvent>(_onSendMessEvent);
-    on<SendImageEvent>(_onSendImageEvent);
-    on<SendVoiceEvent>(_onSendVoiceEvent);
-  }
-
+class SendMessController extends GetxController {
+  
   CollectionReference chats = FirebaseFirestore.instance.collection('chats');
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
 
-  Future<void> _onSendMessEvent(
-      SendMessEvent event, Emitter<SendState> emit) async {
-    if (event.message == '') return;
-    chats.doc(event.chatDocId).collection('messages').add({
+  sendMessEvent(
+      {@required message,
+      @required friendUid,
+      @required friendName,
+      @required chatDocId}) async {
+    if (message == '') return;
+    chats.doc(chatDocId).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
-      'friendUid': event.friendUid,
-      'friendName': event.friendName,
-      'message': event.message,
+      'friendUid': friendUid,
+      'friendName': friendName,
+      'message': message,
       'image': '',
       'voice': '',
       'uid': currentUserId
     }).then((value) {});
-
-    emit(state);
   }
 
-  Future<void> _onSendImageEvent(
-      SendImageEvent event, Emitter<SendState> emit) async {
+  sendImageEvent(
+      {@required source,
+      @required friendUid,
+      @required friendName,
+      @required chatDocId}) async {
     final ImageID = DateTime.now().microsecondsSinceEpoch.toString();
     final ImagePicker _picker = ImagePicker();
 
     Reference ref = FirebaseStorage.instance
         .ref()
-        .child(event.chatDocId)
+        .child(chatDocId)
         .child('/images')
         .child('Image_$ImageID');
 
-    final XFile? image = await _picker.pickImage(source: event.source);
+    final XFile? image = await _picker.pickImage(source: source);
 
     var img = File(image!.path);
 
@@ -60,29 +53,30 @@ class SendBloc extends Bloc<SendEvent, SendState> {
 
     print(ImageURL);
 
-    chats.doc(event.chatDocId).collection('messages').add({
+    chats.doc(chatDocId).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
-      'friendUid': event.friendUid,
-      'friendName': event.friendName,
+      'friendUid': friendUid,
+      'friendName': friendName,
       'message': '',
       'image': ImageURL,
       'voice': '',
       'uid': currentUserId
     }).then((value) {});
-
-    emit(state);
   }
 
-  Future<void> _onSendVoiceEvent(
-      SendVoiceEvent event, Emitter<SendState> emit) async {
+  sendVoiceEvent(
+      {@required record,
+      @required friendUid,
+      @required friendName,
+      @required chatDocId}) async {
     final VoiceID = DateTime.now().microsecondsSinceEpoch.toString();
     Reference ref = FirebaseStorage.instance
         .ref()
-        .child(event.chatDocId)
+        .child(chatDocId)
         .child('/voice')
         .child('Voice_$VoiceID');
 
-    final path = await event.record.stop();
+    final path = await record.stop();
 
     var audio = File(path!);
 
@@ -92,16 +86,14 @@ class SendBloc extends Bloc<SendEvent, SendState> {
 
     print(VoiceURL);
 
-    chats.doc(event.chatDocId).collection('messages').add({
+    chats.doc(chatDocId).collection('messages').add({
       'createdOn': FieldValue.serverTimestamp(),
-      'friendUid': event.friendUid,
-      'friendName': event.friendName,
+      'friendUid': friendUid,
+      'friendName': friendName,
       'message': '',
       'image': '',
       'voice': VoiceURL,
       'uid': currentUserId
     }).then((value) {});
-
-    emit(state);
   }
 }

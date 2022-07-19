@@ -20,8 +20,6 @@ class displayMessWidget extends StatefulWidget {
 
 class _displayMessWidgetState extends State<displayMessWidget> {
   AudioPlayer advancedPlayer = AudioPlayer();
-  String path =
-      'https://firebasestorage.googleapis.com/v0/b/chatapp-ef0a7.appspot.com/o/sample-6s.mp3?alt=media&token=6afbc658-2733-45f4-be07-53a212211ce1';
 
   @override
   void initState() {
@@ -47,7 +45,6 @@ class _displayMessWidgetState extends State<displayMessWidget> {
             icon: Icon(Icons.play_arrow),
             onPressed: () async {
               await advancedPlayer.play(data);
-              // await advancedPlayer.play(path);
               setState(() {});
             },
           )
