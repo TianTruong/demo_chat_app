@@ -114,78 +114,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   fontSize: 25, fontWeight: FontWeight.bold)),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      blurRadius: 7,
-                                      offset: const Offset(0, 5))
-                                ]),
-                            child: ListTile(title: Text('ID: ${user.uid}'))),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      blurRadius: 7,
-                                      offset: const Offset(0, 5))
-                                ]),
-                            child:
-                                ListTile(title: Text('Gmail: ${user.email!}'))),
-                      ),
+                      buildItemSettings(
+                          widget: ListTile(title: Text('ID: ${user.uid}'))),
+                      buildItemSettings(
+                          widget:
+                              ListTile(title: Text('Gmail: ${user.email!}'))),
                       ChangePass(
                         data: data,
                       ),
-                      Padding(
+                      buildItemSettings(
+                          widget: Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    blurRadius: 7,
-                                    offset: const Offset(0, 5))
-                              ]),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: DropdownButton(
-                              // hint: Text("Choose an item"),
-                              value: language,
-                              icon: const Icon(Icons.arrow_drop_down),
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Text(items),
-                                );
-                              }).toList(),
-                              isExpanded: true,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  language = newValue ?? '';
+                        child: DropdownButton(
+                          // hint: Text("Choose an item"),
+                          value: language,
+                          icon: const Icon(Icons.arrow_drop_down),
+                          items: items.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          isExpanded: true,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              language = newValue ?? '';
 
-                                  var locale = Locale(language);
+                              var locale = Locale(language);
 
-                                  if (newValue !=
-                                      Localizations.localeOf(context)
-                                          .toString()) Get.updateLocale(locale);
-                                });
-                              },
-                            ),
-                          ),
+                              if (newValue !=
+                                  Localizations.localeOf(context).toString())
+                                Get.updateLocale(locale);
+                            });
+                          },
                         ),
-                      ),
+                      )),
                       SignOut()
                     ],
                   );
@@ -339,26 +302,13 @@ class _ChangePassState extends State<ChangePass> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    blurRadius: 7,
-                    offset: const Offset(0, 5))
-              ]),
-          child: ListTile(
-            title: Text(AppLocalizations.of(context)!.change_password),
-            onTap: () {
-              showDialog(
-                  context: context, builder: (context) => diaChangePass());
-            },
-          )),
-    );
+    return buildItemSettings(
+        widget: ListTile(
+      title: Text(AppLocalizations.of(context)!.change_password),
+      onTap: () {
+        showDialog(context: context, builder: (context) => diaChangePass());
+      },
+    ));
   }
 }
 
