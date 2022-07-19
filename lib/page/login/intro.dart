@@ -5,6 +5,7 @@ import 'package:demo_chat_app/page/login/sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class Intro extends StatefulWidget {
   const Intro({Key? key}) : super(key: key);
@@ -118,8 +119,8 @@ class _LetStartState extends State<LetStart> {
     return CupertinoButton(
       onPressed: () {
         print(Localizations.localeOf(context).toString());
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginGmail()));
+
+        Get.to(const LoginGmail());
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

@@ -4,9 +4,11 @@ import 'dart:io';
 
 import 'package:demo_chat_app/bloc/login/login_bloc.dart';
 import 'package:demo_chat_app/page/home/home_page.dart';
+import 'package:demo_chat_app/widget/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -80,29 +82,16 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
           onTap: () {
             showModalBottomSheet(
                 context: context,
-                builder: (context) => Container(
-                      height: 150,
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: const Icon(Icons.camera_alt),
-                            title: Text(AppLocalizations.of(context)!.camera),
-                            onTap: () async {
-                              Navigator.of(context).pop();
-                              _saveImage(ImageSource.camera);
-                            },
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.image),
-                            title: Text(AppLocalizations.of(context)!.gallery),
-                            onTap: () async {
-                              Navigator.of(context).pop();
-                              _saveImage(ImageSource.gallery);
-                            },
-                          )
-                        ],
-                      ),
-                    ));
+                builder: (context) => buildImagePicker(
+                    context: context,
+                    onTapCamera: () {
+                      Get.back();
+                      _saveImage(ImageSource.camera);
+                    },
+                    onTapGallery: () {
+                      Get.back();
+                      _saveImage(ImageSource.gallery);
+                    }));
           },
           child: Builder(builder: (context) {
             return avatar != ''
@@ -173,8 +162,7 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
               loginBloc.add(CreateUserEvent(
                   _nameController.text, avatar, user.uid, widget.pass));
 
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
+              Get.to(const HomePage());
             }),
         ElevatedButton(
             style: ElevatedButton.styleFrom(

@@ -1,6 +1,7 @@
 import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/model/firstmessage.dart';
 import 'package:demo_chat_app/state/chat_state.dart';
+import 'package:demo_chat_app/widget/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,27 +50,23 @@ class _ChatsState extends State<Chats> {
                             FirstMessage firstMessage = FirstMessage();
                             firstMessage = firstMessage.map(data);
 
-                            return Card(
-                              child: ListTile(
-                                  title: Text(firstMessage.friendName),
-                                  subtitle: Text(firstMessage.message),
-                                  trailing: const Icon(
-                                      Icons.arrow_forward_ios_outlined),
-                                  onTap: () =>
-                                      firstMessage.friendUid != currentUserId
-                                          ? {
-                                              context.read<CheckBloc>().add(
-                                                  SetChatDocIdEvent(
-                                                      firstMessage.friendUid,
-                                                      firstMessage.friendName)),
-                                            }
-                                          : {
-                                              context.read<CheckBloc>().add(
-                                                  SetChatDocIdEvent(
-                                                      firstMessage.uid,
-                                                      firstMessage.friendName)),
-                                            }),
-                            );
+                            return buildChat(
+                                friendName: firstMessage.friendName,
+                                message: firstMessage.message,
+                                onTap: () =>
+                                    firstMessage.friendUid != currentUserId
+                                        ? {
+                                            context.read<CheckBloc>().add(
+                                                SetChatDocIdEvent(
+                                                    firstMessage.friendUid,
+                                                    firstMessage.friendName)),
+                                          }
+                                        : {
+                                            context.read<CheckBloc>().add(
+                                                SetChatDocIdEvent(
+                                                    firstMessage.uid,
+                                                    firstMessage.friendName)),
+                                          });
                           }).toList()))
                         ],
                       ));

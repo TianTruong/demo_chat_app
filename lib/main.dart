@@ -1,11 +1,9 @@
 // ignore_for_file: avoid_print, use_key_in_widget_constructors, prefer_const_constructors
 
 import 'package:demo_chat_app/app.dart';
-import 'package:demo_chat_app/bloc/locale/locale_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,8 +30,5 @@ Future<void> main() async {
     }
   });
 
-  runApp(BlocProvider(
-    create: (context) => LocaleBloc(),
-    child: App(),
-  ));
+  runApp(App());
 }

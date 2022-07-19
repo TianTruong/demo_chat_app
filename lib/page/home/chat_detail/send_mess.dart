@@ -2,9 +2,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_chat_app/bloc/send/send_bloc.dart';
+import 'package:demo_chat_app/widget/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:record/record.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -66,36 +68,24 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                   onPressed: () => {
                         showModalBottomSheet(
                             context: context,
-                            builder: (context) => Container(
-                                height: 150,
-                                child: Column(children: [
-                                  ListTile(
-                                    leading: const Icon(Icons.camera_alt),
-                                    title: Text(
-                                        AppLocalizations.of(context)!.camera),
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                      sendBloc.add(SendImageEvent(
-                                          widget.chatDocId,
-                                          widget.friendUid,
-                                          widget.friendName,
-                                          ImageSource.camera));
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(Icons.image),
-                                    title: Text(
-                                        AppLocalizations.of(context)!.gallery),
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                      sendBloc.add(SendImageEvent(
-                                          widget.chatDocId,
-                                          widget.friendUid,
-                                          widget.friendName,
-                                          ImageSource.gallery));
-                                    },
-                                  )
-                                ])))
+                            builder: (context) => buildImagePicker(
+                                context: context,
+                                onTapCamera: () {
+                                  Get.back();
+                                  sendBloc.add(SendImageEvent(
+                                      widget.chatDocId,
+                                      widget.friendUid,
+                                      widget.friendName,
+                                      ImageSource.camera));
+                                },
+                                onTapGallery: () {
+                                  Get.back();
+                                  sendBloc.add(SendImageEvent(
+                                      widget.chatDocId,
+                                      widget.friendUid,
+                                      widget.friendName,
+                                      ImageSource.gallery));
+                                }))
                       }),
               // Nút gửi voice
               _isRecording

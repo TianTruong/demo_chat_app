@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:demo_chat_app/page/login/user_name.dart';
+import 'package:demo_chat_app/widget/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,27 +27,6 @@ class _SignUpState extends State<SignUp> {
     _passController.dispose();
     _confirmController.dispose();
     super.dispose();
-  }
-
-  buildTextFormField(
-      TextEditingController controller, bool hide, String hintText) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: TextFormField(
-        obscureText: hide,
-        controller: controller,
-        decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: const BorderSide(color: Colors.black, width: 5),
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(color: Color(0xFF08C187), width: 3)),
-            hintText: hintText),
-        keyboardType: TextInputType.text,
-      ),
-    );
   }
 
   @override
@@ -93,12 +73,19 @@ class _SignUpState extends State<SignUp> {
                         fit: BoxFit.fitWidth,
                       ),
                     ),
-                    buildTextFormField(_gmailController, false,
-                        AppLocalizations.of(context)!.gmail),
-                    buildTextFormField(_passController, true,
-                        AppLocalizations.of(context)!.password),
-                    buildTextFormField(_confirmController, true,
-                        AppLocalizations.of(context)!.confirm_password),
+                    buildTextFormField(
+                        controller: _gmailController,
+                        hide: false,
+                        hintText: AppLocalizations.of(context)!.gmail),
+                    buildTextFormField(
+                        controller: _passController,
+                        hide: true,
+                        hintText: AppLocalizations.of(context)!.password),
+                    buildTextFormField(
+                        controller: _confirmController,
+                        hide: true,
+                        hintText:
+                            AppLocalizations.of(context)!.confirm_password),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: const Color(0xFF08C187),

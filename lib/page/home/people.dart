@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:demo_chat_app/bloc/check/check_bloc.dart';
 import 'package:demo_chat_app/model/users.dart';
+import 'package:demo_chat_app/widget/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,35 +52,14 @@ class _PeopleState extends State<People> {
                             Users users = Users();
                             users = users.map(document.data());
 
-                            return Card(
-                              child: ListTile(
+                            return buildPeople(
+                                avatar: users.avatar,
+                                name: users.name,
+                                status: users.status,
                                 onTap: () async {
                                   context.read<CheckBloc>().add(
                                       SetChatDocIdEvent(users.uid, users.name));
-                                },
-                                leading: users.avatar != ''
-                                    ? ClipOval(
-                                        child: Image.network(
-                                          users.avatar,
-                                          fit: BoxFit.cover,
-                                          cacheHeight: 160,
-                                          cacheWidth: 160,
-                                        ),
-                                      )
-                                    : ClipOval(
-                                        child: Image.asset(
-                                          'images/bg.jpg',
-                                          fit: BoxFit.fill,
-                                          cacheHeight: 160,
-                                          cacheWidth: 160,
-                                        ),
-                                      ),
-                                title: Text(users.name),
-                                subtitle: Text(users.status),
-                                trailing: const Icon(
-                                    Icons.arrow_forward_ios_outlined),
-                              ),
-                            );
+                                });
                           },
                         ).toList(),
                       ),

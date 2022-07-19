@@ -3,12 +3,12 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:demo_chat_app/bloc/locale/locale_bloc.dart';
+import 'package:demo_chat_app/widget/common_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -50,127 +50,73 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     String language = Localizations.localeOf(context).toString();
 
-    return BlocListener<LocaleBloc, LocaleState>(
-      listener: (context, state) {},
-      child: Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('users')
-                    .where('uid',
-                        isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return const Center(child: Text('Something went wrong.'));
-                  }
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+    return Scaffold(
+      body: Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .where('uid',
+                      isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text('Something went wrong.'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-                  if (snapshot.hasData) {
-                    final data = snapshot.requireData;
-                    return ListView(
-                      children: [
-                        Center(
-                          child: ClipOval(
-                              child: InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) => SizedBox(
-                                        height: 150,
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                              leading:
-                                                  const Icon(Icons.camera_alt),
-                                              title: Text(
-                                                  AppLocalizations.of(context)!
-                                                      .camera),
-                                              onTap: () async {
-                                                Navigator.of(context).pop();
-                                                _saveImage(
-                                                    ImageSource.camera, data);
-                                              },
-                                            ),
-                                            ListTile(
-                                              leading: const Icon(Icons.image),
-                                              title: Text(
-                                                  AppLocalizations.of(context)!
-                                                      .gallery),
-                                              onTap: () async {
-                                                Navigator.of(context).pop();
-                                                _saveImage(
-                                                    ImageSource.gallery, data);
-                                              },
-                                            )
-                                          ],
-                                        ),
-                                      ));
-                            },
-                            child: Builder(builder: (context) {
-                              return user.photoURL != null
-                                  ? Image.network(
-                                      user.photoURL!,
-                                      fit: BoxFit.cover,
-                                      cacheHeight: 160,
-                                      cacheWidth: 160,
-                                    )
-                                  : Image.asset(
-                                      'images/bg.jpg',
-                                      fit: BoxFit.cover,
-                                      cacheHeight: 160,
-                                      cacheWidth: 160,
-                                    );
-                            }),
-                          )),
+                if (snapshot.hasData) {
+                  final data = snapshot.requireData;
+                  return ListView(
+                    children: [
+                      Center(
+                        child: ClipOval(
+                            child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (context) => buildImagePicker(
+                                    context: context,
+                                    onTapCamera: () async {
+                                      Get.back();
+                                      _saveImage(ImageSource.camera, data);
+                                    },
+                                    onTapGallery: () async {
+                                      Get.back();
+                                      _saveImage(ImageSource.gallery, data);
+                                    }));
+                          },
+                          child: Builder(builder: (context) {
+                            return user.photoURL != null
+                                ? Image.network(
+                                    user.photoURL!,
+                                    fit: BoxFit.cover,
+                                    cacheHeight: 160,
+                                    cacheWidth: 160,
+                                  )
+                                : Image.asset(
+                                    'images/bg.jpg',
+                                    fit: BoxFit.cover,
+                                    cacheHeight: 160,
+                                    cacheWidth: 160,
+                                  );
+                          }),
+                        )),
+                      ),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text('${user.displayName!}',
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.bold)),
                         ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text('${user.displayName!}',
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold)),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 7,
-                                        offset: const Offset(0, 5))
-                                  ]),
-                              child: ListTile(title: Text('ID: ${user.uid}'))),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        blurRadius: 7,
-                                        offset: const Offset(0, 5))
-                                  ]),
-                              child: ListTile(
-                                  title: Text('Gmail: ${user.email!}'))),
-                        ),
-                        ChangePass(
-                          data: data,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Container(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
@@ -180,42 +126,72 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       blurRadius: 7,
                                       offset: const Offset(0, 5))
                                 ]),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: DropdownButton(
-                                // hint: Text("Choose an item"),
-                                value: language,
-                                icon: const Icon(Icons.arrow_drop_down),
-                                items: items.map((String items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(items),
-                                  );
-                                }).toList(),
-                                isExpanded: true,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    language = newValue ?? '';
+                            child: ListTile(title: Text('ID: ${user.uid}'))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      blurRadius: 7,
+                                      offset: const Offset(0, 5))
+                                ]),
+                            child:
+                                ListTile(title: Text('Gmail: ${user.email!}'))),
+                      ),
+                      ChangePass(
+                        data: data,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    blurRadius: 7,
+                                    offset: const Offset(0, 5))
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: DropdownButton(
+                              // hint: Text("Choose an item"),
+                              value: language,
+                              icon: const Icon(Icons.arrow_drop_down),
+                              items: items.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              isExpanded: true,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  language = newValue ?? '';
 
-                                    if (newValue !=
-                                        Localizations.localeOf(context)
-                                            .toString())
-                                      context.read<LocaleBloc>().add(
-                                          SetLocaleEvent(Locale.fromSubtags(
-                                              languageCode: language)));
-                                  });
-                                },
-                              ),
+                                  var locale = Locale(language);
+
+                                  if (newValue !=
+                                      Localizations.localeOf(context)
+                                          .toString()) Get.updateLocale(locale);
+                                });
+                              },
                             ),
                           ),
                         ),
-                        SignOut()
-                      ],
-                    );
-                  }
-                  return Container();
-                })),
-      ),
+                      ),
+                      SignOut()
+                    ],
+                  );
+                }
+                return Container();
+              })),
     );
   }
 }
@@ -232,26 +208,6 @@ class _ChangePassState extends State<ChangePass> {
   TextEditingController _currentController = TextEditingController();
   TextEditingController _passController = TextEditingController();
   TextEditingController _confirmController = TextEditingController();
-
-  buildTextFormField(TextEditingController controller, String hintText) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: TextFormField(
-        obscureText: true,
-        controller: controller,
-        decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: const BorderSide(color: Colors.black, width: 5),
-            ),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(color: Color(0xFF08C187), width: 3)),
-            hintText: hintText),
-        keyboardType: TextInputType.text,
-      ),
-    );
-  }
 
   diaChangePass() {
     return Dialog(
@@ -270,12 +226,18 @@ class _ChangePassState extends State<ChangePass> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                buildTextFormField(_currentController,
-                    AppLocalizations.of(context)!.current_password),
-                buildTextFormField(_passController,
-                    AppLocalizations.of(context)!.new_password),
-                buildTextFormField(_confirmController,
-                    AppLocalizations.of(context)!.confirm_password),
+                buildTextFormField(
+                    controller: _currentController,
+                    hide: true,
+                    hintText: AppLocalizations.of(context)!.current_password),
+                buildTextFormField(
+                    controller: _passController,
+                    hide: true,
+                    hintText: AppLocalizations.of(context)!.new_password),
+                buildTextFormField(
+                    controller: _confirmController,
+                    hide: true,
+                    hintText: AppLocalizations.of(context)!.confirm_password),
                 Center(
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -305,7 +267,7 @@ class _ChangePassState extends State<ChangePass> {
                                       FlatButton(
                                           child: const Text('OK'),
                                           onPressed: () {
-                                            Navigator.pop(context);
+                                            Get.back();
                                           }),
                                     ],
                                   ));
@@ -321,7 +283,7 @@ class _ChangePassState extends State<ChangePass> {
                                         FlatButton(
                                             child: const Text('OK'),
                                             onPressed: () {
-                                              Navigator.pop(context);
+                                              Get.back();
                                             }),
                                       ],
                                     ));
@@ -335,7 +297,7 @@ class _ChangePassState extends State<ChangePass> {
 
                               _passController.clear();
                               _confirmController.clear();
-                              Navigator.pop(context);
+                              Get.back();
                               showModalBottomSheet(
                                   context: context,
                                   builder: (context) => SizedBox(
@@ -357,7 +319,7 @@ class _ChangePassState extends State<ChangePass> {
                                             FlatButton(
                                                 child: const Text('OK'),
                                                 onPressed: () {
-                                                  Navigator.pop(context);
+                                                  Get.back();
                                                 }),
                                           ],
                                         ));
@@ -432,13 +394,13 @@ class _SignOutState extends State<SignOut> {
                       FlatButton(
                           child: Text(AppLocalizations.of(context)!.yes),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Get.back();
                             FirebaseAuth.instance.signOut();
                           }),
                       FlatButton(
                           child: Text(AppLocalizations.of(context)!.no),
                           onPressed: () {
-                            Navigator.pop(context);
+                            Get.back();
                           }),
                     ],
                   ));

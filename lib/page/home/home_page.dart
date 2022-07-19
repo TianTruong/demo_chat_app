@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -45,16 +46,11 @@ class _HomeViewSmallState extends State<HomeViewSmall> {
   GlobalKey<ScaffoldState> _profileScaffoldKey = GlobalKey<ScaffoldState>();
   void callChatDetailScreen(
       BuildContext context, String chatId, String name, String uid) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ChatDetail(
-          chatDocId: chatId,
-          friendName: name,
-          friendUid: uid,
-        ),
-      ),
-    );
+    Get.to(ChatDetail(
+      chatDocId: chatId,
+      friendName: name,
+      friendUid: uid,
+    ));
   }
 
   void _onItemTapped(int index) {
