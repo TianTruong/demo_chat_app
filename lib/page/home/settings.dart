@@ -76,9 +76,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         child: ClipOval(
                             child: InkWell(
                           onTap: () {
-                            showModalBottomSheet(
-                                context: context,
-                                builder: (context) => buildImagePicker(
+                            Get.bottomSheet(
+                                buildImagePicker(
                                     context: context,
                                     onTapCamera: () async {
                                       Get.back();
@@ -87,7 +86,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     onTapGallery: () async {
                                       Get.back();
                                       _saveImage(ImageSource.gallery, data);
-                                    }));
+                                    }),
+                                backgroundColor: Colors.white);
                           },
                           child: Builder(builder: (context) {
                             return user.photoURL != null
@@ -221,35 +221,44 @@ class _ChangePassState extends State<ChangePass> {
                             _confirmController.text == '' ||
                             _passController.text.isEmpty ||
                             _confirmController.text.isEmpty) {
-                          showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    content: Text(AppLocalizations.of(context)!
-                                        .please_enter_enough_info),
-                                    actions: [
-                                      FlatButton(
-                                          child: const Text('OK'),
-                                          onPressed: () {
-                                            Get.back();
-                                          }),
-                                    ],
-                                  ));
+                          Get.defaultDialog(
+                            title: '',
+                            content: Text(AppLocalizations.of(context)!
+                                .please_enter_enough_info),
+                            confirmTextColor: Colors.white,
+                            confirm: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: const Color(0xFF08C187),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
+                                ),
+                                child: Text(
+                                  'Ok',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                onPressed: () => Get.back()),
+                          );
                         } else {
                           if (_currentController.text !=
                               widget.data.docs[0]['password']) {
-                            showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                      content:
-                                          Text('Mật khẩu hiện tại không đúng'),
-                                      actions: [
-                                        FlatButton(
-                                            child: const Text('OK'),
-                                            onPressed: () {
-                                              Get.back();
-                                            }),
-                                      ],
-                                    ));
+                            Get.defaultDialog(
+                              title: '',
+                              content: Text('Mật khẩu hiện tại không đúng'),
+                              confirmTextColor: Colors.white,
+                              confirm: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: const Color(0xFF08C187),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0)),
+                                  ),
+                                  child: Text(
+                                    'Ok',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  onPressed: () => Get.back()),
+                            );
                           } else {
                             if (_passController.text ==
                                 _confirmController.text) {
@@ -261,31 +270,41 @@ class _ChangePassState extends State<ChangePass> {
                               _passController.clear();
                               _confirmController.clear();
                               Get.back();
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (context) => SizedBox(
-                                        height: 100,
-                                        child: Center(
-                                            child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .change_successfully)),
-                                      ));
+
+                              Get.snackbar(
+                                  'Thông báo',
+                                  AppLocalizations.of(context)!
+                                      .change_successfully,
+                                  // snackPosition: SnackPosition.BOTTOM,
+                                  duration: const Duration(seconds: 3),
+                                  backgroundColor: Colors.white,
+                                  colorText: Colors.black,
+                                  messageText: Text(
+                                    AppLocalizations.of(context)!
+                                        .change_successfully,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  ));
                             } else {
                               if (_passController.text !=
                                   _confirmController.text) {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                          content: Text(
-                                              'xác nhận mật khẩu không đúng'),
-                                          actions: [
-                                            FlatButton(
-                                                child: const Text('OK'),
-                                                onPressed: () {
-                                                  Get.back();
-                                                }),
-                                          ],
-                                        ));
+                                Get.defaultDialog(
+                                  title: '',
+                                  content: Text('Xác nhận mật khẩu không đúng'),
+                                  confirmTextColor: Colors.white,
+                                  confirm: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: const Color(0xFF08C187),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0)),
+                                      ),
+                                      child: Text(
+                                        'Ok',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      onPressed: () => Get.back()),
+                                );
                               }
                             }
                           }
@@ -336,24 +355,40 @@ class _SignOutState extends State<SignOut> {
           ),
         ),
         onPressed: () {
-          showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    content: Text('${AppLocalizations.of(context)!.signout}?'),
-                    actions: [
-                      FlatButton(
-                          child: Text(AppLocalizations.of(context)!.yes),
-                          onPressed: () {
-                            Get.back();
-                            FirebaseAuth.instance.signOut();
-                          }),
-                      FlatButton(
-                          child: Text(AppLocalizations.of(context)!.no),
-                          onPressed: () {
-                            Get.back();
-                          }),
-                    ],
-                  ));
+          Get.defaultDialog(
+              title: '',
+              confirmTextColor: Colors.white,
+              content: Text('${AppLocalizations.of(context)!.signout}?',
+                  style: TextStyle(fontSize: 24)),
+              actions: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xFF08C187),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.yes,
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () {
+                      Get.back();
+                      FirebaseAuth.instance.signOut();
+                    }),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color(0xFF08C187),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.no,
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onPressed: () {
+                      Get.back();
+                    }),
+              ]);
         });
   }
 }

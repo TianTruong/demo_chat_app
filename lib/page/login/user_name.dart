@@ -80,9 +80,8 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
         ClipOval(
             child: InkWell(
           onTap: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (context) => buildImagePicker(
+            Get.bottomSheet(
+                buildImagePicker(
                     context: context,
                     onTapCamera: () {
                       Get.back();
@@ -91,7 +90,8 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
                     onTapGallery: () {
                       Get.back();
                       _saveImage(ImageSource.gallery);
-                    }));
+                    }),
+                backgroundColor: Colors.white);
           },
           child: Builder(builder: (context) {
             return avatar != ''

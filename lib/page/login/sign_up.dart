@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -109,7 +110,7 @@ class _SignUpState extends State<SignUp> {
                             child: Text(AppLocalizations.of(context)!.signin,
                                 style: TextStyle(color: Colors.white)),
                             onPressed: () {
-                              Navigator.pop(context);
+                              Get.back();
                             })
                       ],
                     )
@@ -128,33 +129,40 @@ class _SignUpState extends State<SignUp> {
         _gmailController.text.isEmpty ||
         _passController.text.isEmpty ||
         _confirmController.text.isEmpty) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                content: Text(
-                    AppLocalizations.of(context)!.please_enter_enough_info),
-                actions: [
-                  FlatButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                ],
-              ));
+      Get.defaultDialog(
+        title: '',
+        content: Text(AppLocalizations.of(context)!.please_enter_enough_info),
+        confirmTextColor: Colors.white,
+        confirm: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: const Color(0xFF08C187),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+            ),
+            child: Text(
+              'Ok',
+              style: TextStyle(fontSize: 15),
+            ),
+            onPressed: () => Get.back()),
+      );
     } else {
       if (_passController.text != _confirmController.text) {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  content: Text('xác nhận mật khẩu không đúng'),
-                  actions: [
-                    FlatButton(
-                        child: const Text('OK'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                  ],
-                ));
+        Get.defaultDialog(
+          title: '',
+          content: Text('Xác nhận mật khẩu không đúng'),
+          confirmTextColor: Colors.white,
+          confirm: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xFF08C187),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+              ),
+              child: Text(
+                'Ok',
+                style: TextStyle(fontSize: 15),
+              ),
+              onPressed: () => Get.back()),
+        );
       } else {
         try {
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -162,18 +170,27 @@ class _SignUpState extends State<SignUp> {
               password: _passController.text.trim());
         } on FirebaseAuthException catch (e) {
           print(e);
-          showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    content: Text(e.toString().trim()),
-                    actions: [
-                      FlatButton(
-                          child: const Text('OK'),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          }),
-                    ],
-                  ));
+
+          Get.dialog(AlertDialog(
+            content: Text(e.toString().trim()),
+            actions: [
+              FlatButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Get.back();
+                  }),
+            ],
+          ));
+
+          // Get.snackbar('Error', e.toString().trim(),
+          //     // snackPosition: SnackPosition.BOTTOM,
+          //     duration: const Duration(seconds: 2),
+          //     backgroundColor: Colors.white,
+          //     colorText: Colors.black,
+          //     messageText: Text(
+          //       e.toString().trim(),
+          //       style: TextStyle(fontWeight: FontWeight.w500),
+          //     ));
         }
       }
     }

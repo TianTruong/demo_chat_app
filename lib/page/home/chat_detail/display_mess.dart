@@ -72,7 +72,6 @@ class _displayMessWidgetState extends State<displayMessWidget> {
   Widget build(BuildContext context) {
     return ChatBubble(
       clipper: ChatBubbleClipper6(
-        nipSize: 5,
         radius: 15,
         type: isSender(widget.mes.uid.toString())
             ? BubbleType.sendBubble

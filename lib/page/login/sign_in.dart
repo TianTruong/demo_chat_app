@@ -135,19 +135,22 @@ class _LoginGmailState extends State<LoginGmail> {
         _passController.text == '' ||
         _gmailController.text.isEmpty ||
         _passController.text.isEmpty) {
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                content: Text(
-                    AppLocalizations.of(context)!.please_enter_enough_info),
-                actions: [
-                  FlatButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }),
-                ],
-              ));
+      Get.defaultDialog(
+        title: '',
+        content: Text(AppLocalizations.of(context)!.please_enter_enough_info),
+        confirmTextColor: Colors.white,
+        confirm: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: const Color(0xFF08C187),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+            ),
+            child: Text(
+              'Ok',
+              style: TextStyle(fontSize: 15),
+            ),
+            onPressed: () => Get.back()),
+      );
     } else {
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -155,18 +158,23 @@ class _LoginGmailState extends State<LoginGmail> {
             password: _passController.text.trim());
       } on FirebaseAuthException catch (e) {
         print(e);
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  content: Text(e.toString().trim()),
-                  actions: [
-                    FlatButton(
-                        child: const Text('OK'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
-                  ],
-                ));
+
+        Get.defaultDialog(
+          title: '',
+          content: Text(e.toString().trim()),
+          confirmTextColor: Colors.white,
+          confirm: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: const Color(0xFF08C187),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)),
+              ),
+              child: Text(
+                'Ok',
+                style: TextStyle(fontSize: 15),
+              ),
+              onPressed: () => Get.back()),
+        );
       }
     }
   }

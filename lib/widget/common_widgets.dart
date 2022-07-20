@@ -5,17 +5,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 Widget buildImagePicker(
     {@required context, @required onTapCamera, @required onTapGallery}) {
   return SizedBox(
-      height: 150,
-      child: Column(children: [
-        ListTile(
-            leading: const Icon(Icons.camera_alt),
-            title: Text(AppLocalizations.of(context)!.camera),
-            onTap: onTapCamera),
-        ListTile(
-            leading: const Icon(Icons.image),
-            title: Text(AppLocalizations.of(context)!.gallery),
-            onTap: onTapGallery)
-      ]));
+      child: Wrap(children: [
+    ListTile(
+        leading: const Icon(Icons.camera_alt),
+        title: Text(AppLocalizations.of(context)!.camera),
+        onTap: onTapCamera),
+    ListTile(
+        leading: const Icon(Icons.image),
+        title: Text(AppLocalizations.of(context)!.gallery),
+        onTap: onTapGallery)
+  ]));
 }
 
 // TextField

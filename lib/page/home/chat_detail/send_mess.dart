@@ -61,9 +61,8 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                 size: 35,
               ),
               onPressed: () => {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) => buildImagePicker(
+                    Get.bottomSheet(
+                        buildImagePicker(
                             context: context,
                             onTapCamera: () {
                               Get.back();
@@ -82,7 +81,31 @@ class _SendMessageWidgetState extends State<SendMessageWidget> {
                                   chatDocId: widget.chatDocId,
                                   friendUid: widget.friendUid,
                                   friendName: widget.friendName);
-                            }))
+                            }),
+                        backgroundColor: Colors.white)
+
+                    // showModalBottomSheet(
+                    //     context: context,
+                    //     builder: (context) => buildImagePicker(
+                    //         context: context,
+                    //         onTapCamera: () {
+                    //           Get.back();
+
+                    //           sendController.sendImageEvent(
+                    //               source: ImageSource.camera,
+                    //               chatDocId: widget.chatDocId,
+                    //               friendUid: widget.friendUid,
+                    //               friendName: widget.friendName);
+                    //         },
+                    //         onTapGallery: () {
+                    //           Get.back();
+
+                    //           sendController.sendImageEvent(
+                    //               source: ImageSource.gallery,
+                    //               chatDocId: widget.chatDocId,
+                    //               friendUid: widget.friendUid,
+                    //               friendName: widget.friendName);
+                    //         }))
                   }),
           // Nút gửi voice
           _isRecording
