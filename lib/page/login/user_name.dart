@@ -154,15 +154,35 @@ class _WireFrameUserNameState extends State<WireFrameUserName> {
               },
             ),
             onPressed: () {
-              print(_nameController.text);
-              print(avatar);
-              user.updateDisplayName(_nameController.text);
-              user.updatePhotoURL(avatar);
+              if (_nameController.text == '' || _nameController.text.isEmpty) {
+                Get.defaultDialog(
+                  title: '',
+                  content: Text(
+                      AppLocalizations.of(context)!.please_enter_enough_info),
+                  confirmTextColor: Colors.white,
+                  confirm: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: const Color(0xFF08C187),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0)),
+                      ),
+                      child: Text(
+                        'Ok',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      onPressed: () => Get.back()),
+                );
+              } else {
+                print(_nameController.text);
+                print(avatar);
+                user.updateDisplayName(_nameController.text);
+                user.updatePhotoURL(avatar);
 
-              loginBloc.add(CreateUserEvent(
-                  _nameController.text, avatar, user.uid, widget.pass));
+                loginBloc.add(CreateUserEvent(
+                    _nameController.text, avatar, user.uid, widget.pass));
 
-              Get.to(const HomePage());
+                Get.to(const HomePage());
+              }
             }),
         ElevatedButton(
             style: ElevatedButton.styleFrom(
